@@ -6,7 +6,7 @@ import '../css/app.scss';
 
 import { App } from './src/App';
 
-ReactDOM.render(<App />, document.getElementById('react'));
+ReactDOM.render(<App />, document.getElementById('app'));
 
 //@ts-ignore
 module.hot.accept();

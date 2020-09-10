@@ -8,6 +8,10 @@
     <script defer type="text/javascript" src="<%= Routes.static_path(@conn, "/js/index.js") %>"></script>
   </head>
   <body>
-    <%= @inner_content %>
+    <main class="container">
+      <p class="alert alert-info" role="alert"><%= get_flash(@conn, :info) %></p>
+      <p class="alert alert-danger" role="alert"><%= get_flash(@conn, :error) %></p>
+      <%= @inner_content %>
+    </main>
   </body>
 </html>
