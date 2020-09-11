@@ -1,0 +1,29 @@
+<div class="auth">
+  <h1 class="auth__header">Acessar conta</h1>
+
+  <%= form_for @conn, Routes.user_session_path(@conn, :create), [as: :user, class: "auth__form"], fn f -> %>
+    <%= if @error_message do %>
+      <p class="auth__error"><%= @error_message %></p>
+    <% end %>
+
+    <%= label f, :email, "E-mail", [class: "auth__label"] %>
+    <%= email_input f, :email, required: true %>
+
+    <%= label f, :password, "Senha", [class: "auth__label"] %>
+    <%= password_input f, :password, required: true %>
+    <%= link "Esqueceu sua senha?", to: Routes.user_reset_password_path(@conn, :new) %>
+
+    <div class="remember">
+      <%= checkbox f, :remember_me, [class: "remember__checkbox"] %>
+      <%= label f, :remember_me, "Mantenha-me conectado por 60 dias", [class: "remember__label"] %>
+    </div>
+
+    <div>
+      <%= submit "Entrar", [class: "auth__button"] %>
+    </div>
+  <% end %>
+
+  <p class="auth__link">
+    <%= link "Não tem uma conta? Cadastre-se!", to: Routes.user_registration_path(@conn, :new) %>
+  </p>
+</div>

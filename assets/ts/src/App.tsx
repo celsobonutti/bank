@@ -5,6 +5,9 @@ const AppComponent = () => {
   return (
     <div>
       <h1>Welcome to React</h1>
+      <p>
+        <a href="/api/log_out">Sair</a>
+      </p>
     </div>
   );
 };

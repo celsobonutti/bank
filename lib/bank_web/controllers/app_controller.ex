@@ -1,4 +1,4 @@
-defmodule BankWeb.PageController do
+defmodule BankWeb.AppController do
   use BankWeb, :controller
 
   def index(conn, _params) do

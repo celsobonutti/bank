@@ -1,3 +1,3 @@
-defmodule BankWeb.PageView do
+defmodule BankWeb.AppView do
   use BankWeb, :view
 end

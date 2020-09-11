@@ -1,0 +1,30 @@
+<div class="auth">
+  <h1 class="auth__header">Cadastro</h1>
+
+  <%= form_for @changeset, Routes.user_registration_path(@conn, :create), [class: "auth__form"], fn f -> %>
+  <%= if @changeset.action do %>
+    <p class="auth__error">Ops, parece que algo deu errado! Cheque os erros abaixo:</p>
+  <% end %>
+
+  <%= label f, :email, [class: "auth__label"] %>
+  <%= email_input f, :email, required: true %>
+  <%= error_tag f, :email %>
+
+  <%= label f, :document, "CPF", [class: "auth__label"] %>
+  <%= text_input f, :document, required: true %>
+  <%= error_tag f, :document %>
+
+  <%= label f, :password, [class: "auth__label"] %>
+  <%= password_input f, :password, required: true %>
+  <%= error_tag f, :password %>
+
+  <div>
+    <%= submit "Cadastrar", [class: "auth__button"] %>
+  </div>
+  <% end %>
+
+  <p>
+    <%= link "Log in", to: Routes.user_session_path(@conn, :new) %> |
+    <%= link "Forgot your password?", to: Routes.user_reset_password_path(@conn, :new) %>
+  </p>
+</div>

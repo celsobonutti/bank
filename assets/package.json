@@ -9,6 +9,8 @@
     "lint": "eslint --ext .ts,.tsx ./"
   },
   "dependencies": {
+    "autoprefixer": "^9.8.6",
+    "normalize.css": "^8.0.1",
     "phoenix": "file:../deps/phoenix",
     "phoenix_html": "file:../deps/phoenix_html",
     "react": "^16.13.1",
