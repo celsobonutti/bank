@@ -1,6 +1,0 @@
-{
-  "devDependencies": {
-    "parcel": "^1.12.4",
-    "parcel-plugin-stdin": "^0.1.1"
-  }
-}

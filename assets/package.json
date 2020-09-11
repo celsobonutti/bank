@@ -3,8 +3,8 @@
   "description": " ",
   "license": "MIT",
   "scripts": {
-    "deploy": "cp -R static/* ../priv/static/ && parcel build ts/index.tsx --out-dir ../priv/static/js --public-url /js --no-cache",
-    "watch": "cp -R static/* ../priv/static/ && parcel watch ts/index.tsx --out-dir ../priv/static/js --public-url /js",
+    "deploy": "cp -R static/* ../priv/static/ && parcel build ts/index.tsx css/app.scss --out-dir ../priv/static --public-url / --no-cache",
+    "watch": "cp -R static/* ../priv/static/ && parcel watch ts/index.tsx css/app.scss --out-dir ../priv/static --public-url /",
     "prettier:write": "prettier --write \"**/*.{ts,.tsx}\"",
     "lint": "eslint --ext .ts,.tsx ./"
   },
