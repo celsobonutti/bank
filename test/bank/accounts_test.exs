@@ -101,7 +101,7 @@ defmodule Bank.AccountsTest do
       assert "já existe uma conta com este e-mail" in errors_on(changeset).email
     end
 
-    test "validate document uniqueness" do
+    test "validates document uniqueness" do
       %{document: document} = user_fixture()
 
       {:error, changeset} = Accounts.register_user(%{document: document})
@@ -116,6 +116,20 @@ defmodule Bank.AccountsTest do
       assert is_binary(user.hashed_password)
       assert is_nil(user.confirmed_at)
       assert is_nil(user.password)
+    end
+  end
+
+  describe "user balance starts at zero" do
+    test "when created without a balance" do
+      %{balance: balance} = user_fixture()
+
+      assert balance == 0
+    end
+
+    test "when a value is passed to register_user" do
+      {:ok, user} = Accounts.register_user(%{email: unique_user_email(), document: valid_user_document(), password: valid_user_password(), balance: 500.0})
+
+      assert user.balance == 0
     end
   end
 
