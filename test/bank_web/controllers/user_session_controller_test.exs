@@ -32,7 +32,7 @@ defmodule BankWeb.UserSessionControllerTest do
 
       # Now do a logged in request and assert on the menu
       conn = get(conn, "/")
-      response = html_response(conn, 302)
+      assert response = html_response(conn, 302)
       assert redirected_to(conn) == "/app"
     end
 

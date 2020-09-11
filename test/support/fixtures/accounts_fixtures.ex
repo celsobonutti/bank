@@ -7,6 +7,8 @@ defmodule Bank.AccountsFixtures do
   def unique_user_email, do: "user#{System.unique_integer()}@example.com"
   def valid_user_password, do: "Hug3Passw0rd"
   def valid_user_document, do: "06038847502"
+  def another_valid_document, do: "22331305617"
+
 
   def user_fixture(attrs \\ %{}) do
     {:ok, user} =

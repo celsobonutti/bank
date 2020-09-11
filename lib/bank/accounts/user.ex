@@ -25,37 +25,39 @@ defmodule Bank.Accounts.User do
   def registration_changeset(user, attrs) do
     user
     |> cast(attrs, [:email, :password, :document])
+    |> validate_document()
     |> validate_email()
     |> validate_password()
-    |> validate_document()
   end
 
   defp validate_email(changeset) do
     changeset
-    |> validate_required([:email])
+    |> validate_required([:email], message: "não pode estar em branco")
     |> validate_format(:email, ~r/^[^\s]+@[^\s]+$/, message: "formato inválido")
-    |> validate_length(:email, max: 160)
-    |> unsafe_validate_unique(:email, Bank.Repo)
+    |> validate_length(:email, max: 160, message: "deve possuir no máximo 160 caracteres")
+    |> unsafe_validate_unique(:email, Bank.Repo, message: "já existe uma conta com este e-mail")
     |> unique_constraint(:email)
   end
 
   defp validate_password(changeset) do
     changeset
-    |> validate_required([:password])
-    |> validate_length(:password, min: 12, max: 80)
-    |> validate_format(:password, ~r/[a-z]/, message: "deve possuir pelo menos um caracter minúsculo")
-    |> validate_format(:password, ~r/[A-Z]/, message: "deve possuir pelo menos um caracter maiúsculo")
+    |> validate_required([:password], message: "não pode estar em branco")
+    |> validate_length(:password, min: 12, message: "deve possuir ao menos 12 caracteres")
+    |> validate_length(:password, max: 80, message: "deve possuir no máximo 80 caracteres")
+    |> validate_format(:password, ~r/[a-z]/, message: "deve possuir ao menos um caracter minúsculo")
+    |> validate_format(:password, ~r/[A-Z]/, message: "deve possuir ao menos um caracter maiúsculo")
     |> validate_format(:password, ~r/[!?@#$%^&*_0-9]/,
-      message: "deve possuir pelo menos um número ou caracter especial"
+      message: "deve possuir ao menos um número ou caracter especial"
     )
     |> prepare_changes(&hash_password/1)
   end
 
   defp validate_document(changeset) do
     changeset
+    |> validate_required([:document], message: "não pode estar em branco")
     |> validate_format(:document, ~r/[0-9]{11}/, message: "documento inválido")
     |> validate_document_format()
-    |> unsafe_validate_unique(:document, Bank.Repo)
+    |> unsafe_validate_unique(:document, Bank.Repo, message: "já existe uma conta com este documento")
     |> unique_constraint(:document)
   end
 
@@ -127,9 +129,6 @@ defmodule Bank.Accounts.User do
     end
   end
 
-  @doc """
-  Validates users document
-  """
   defp validate_document_format(changeset) do
     if changeset.valid? do
       document_is_valid =

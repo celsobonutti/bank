@@ -48,44 +48,70 @@ defmodule Bank.AccountsTest do
   end
 
   describe "register_user/1" do
-    test "requires email and password to be set" do
+    test "requires email, document and password to be set" do
       {:error, changeset} = Accounts.register_user(%{})
 
       assert %{
-               password: ["can't be blank"],
-               email: ["can't be blank"]
+               password: ["não pode estar em branco"],
+               email: ["não pode estar em branco"],
+               document: ["não pode estar em branco"]
              } = errors_on(changeset)
     end
 
-    test "validates email and password when given" do
-      {:error, changeset} = Accounts.register_user(%{email: "not valid", password: "not valid"})
+    test "validates email, document and password when given" do
+      {:error, changeset} = Accounts.register_user(%{email: "not valid", document: "not valid", password: "not valid"})
 
       assert %{
                email: ["formato inválido"],
-               password: ["deve possuir no mínimo 12 caracter(es)"]
+               document: ["documento inválido"],
+               password: [
+                "deve possuir ao menos um número ou caracter especial",
+                "deve possuir ao menos um caracter maiúsculo",
+                "deve possuir ao menos 12 caracteres"
+              ]
              } = errors_on(changeset)
+    end
+
+    test "validates repetition documents" do
+      {:error, changeset} = Accounts.register_user(%{document: "99999999999"})
+
+      assert "documento inválido" in errors_on(changeset).document
+    end
+
+    test "validates invalid documents" do
+      {:error, changeset} = Accounts.register_user(%{document: "91929994998"})
+
+      assert "documento inválido" in errors_on(changeset).document
     end
 
     test "validates maximum values for e-mail and password for security" do
       too_long = String.duplicate("db", 100)
       {:error, changeset} = Accounts.register_user(%{email: too_long, password: too_long})
-      assert "should be at most 160 character(s)" in errors_on(changeset).email
-      assert "should be at most 80 character(s)" in errors_on(changeset).password
+      assert "deve possuir no máximo 160 caracteres" in errors_on(changeset).email
+      assert "deve possuir no máximo 80 caracteres" in errors_on(changeset).password
     end
 
     test "validates e-mail uniqueness" do
       %{email: email} = user_fixture()
       {:error, changeset} = Accounts.register_user(%{email: email})
-      assert "has already been taken" in errors_on(changeset).email
+      assert "já existe uma conta com este e-mail" in errors_on(changeset).email
 
       # Now try with the upper cased e-mail too, to check that email case is ignored.
       {:error, changeset} = Accounts.register_user(%{email: String.upcase(email)})
-      assert "has already been taken" in errors_on(changeset).email
+      assert "já existe uma conta com este e-mail" in errors_on(changeset).email
+    end
+
+    test "validate document uniqueness" do
+      %{document: document} = user_fixture()
+
+      {:error, changeset} = Accounts.register_user(%{document: document})
+      assert "já existe uma conta com este documento" in errors_on(changeset).document
     end
 
     test "registers users with a hashed password" do
       email = unique_user_email()
-      {:ok, user} = Accounts.register_user(%{email: email, password: valid_user_password()})
+
+      {:ok, user} = Accounts.register_user(%{email: email, document: valid_user_document(), password: valid_user_password()})
       assert user.email == email
       assert is_binary(user.hashed_password)
       assert is_nil(user.confirmed_at)
@@ -96,7 +122,7 @@ defmodule Bank.AccountsTest do
   describe "change_user_registration/2" do
     test "returns a changeset" do
       assert %Ecto.Changeset{} = changeset = Accounts.change_user_registration(%User{})
-      assert changeset.required == [:password, :email]
+      assert changeset.required == [:password, :email, :document]
     end
   end
 
@@ -130,16 +156,7 @@ defmodule Bank.AccountsTest do
       {:error, changeset} =
         Accounts.apply_user_email(user, valid_user_password(), %{email: too_long})
 
-      assert "should be at most 160 character(s)" in errors_on(changeset).email
-    end
-
-    test "validates e-mail uniqueness", %{user: user} do
-      %{email: email} = user_fixture()
-
-      {:error, changeset} =
-        Accounts.apply_user_email(user, valid_user_password(), %{email: email})
-
-      assert "has already been taken" in errors_on(changeset).email
+      assert "deve possuir no máximo 160 caracteres" in errors_on(changeset).email
     end
 
     test "validates current password", %{user: user} do
@@ -240,10 +257,10 @@ defmodule Bank.AccountsTest do
 
       assert %{
                password: [
-                "deve possuir pelo menos um número ou caracter especial",
-                "deve possuir pelo menos um caracter maiúsculo",
+                "deve possuir ao menos um número ou caracter especial",
+                "deve possuir ao menos um caracter maiúsculo",
 
-                "deve possuir no mínimo 12 caracter(es)",
+                "deve possuir ao menos 12 caracteres",
                 ],
                password_confirmation: ["does not match password"]
              } = errors_on(changeset)
@@ -255,7 +272,7 @@ defmodule Bank.AccountsTest do
       {:error, changeset} =
         Accounts.update_user_password(user, valid_user_password(), %{password: too_long})
 
-      assert "should be at most 80 character(s)" in errors_on(changeset).password
+      assert "deve possuir no máximo 80 caracteres" in errors_on(changeset).password
     end
 
     test "validates current password", %{user: user} do
@@ -272,7 +289,7 @@ defmodule Bank.AccountsTest do
         })
 
       assert is_nil(user.password)
-      assert Accounts.get_user_by_email_and_password(user.email, "n3whug3P45sw0rd")
+      assert Accounts.get_user_by_email_and_password(user.email, "n3whug3P45sw0rd!")
     end
 
     test "deletes all tokens for the given user", %{user: user} do
@@ -301,7 +318,9 @@ defmodule Bank.AccountsTest do
       assert_raise Ecto.ConstraintError, fn ->
         Repo.insert!(%UserToken{
           token: user_token.token,
-          user_id: user_fixture().id,
+          user_id: user_fixture(%{
+            document: another_valid_document()
+          }).id,
           context: "session"
         })
       end
@@ -453,7 +472,11 @@ defmodule Bank.AccountsTest do
         })
 
       assert %{
-               password: ["deve possuir no mínimo 12 caracter(es)"],
+               password: [
+                  "deve possuir ao menos um número ou caracter especial",
+                  "deve possuir ao menos um caracter maiúsculo",
+                  "deve possuir ao menos 12 caracteres"
+                ],
                password_confirmation: ["does not match password"]
              } = errors_on(changeset)
     end
@@ -461,7 +484,7 @@ defmodule Bank.AccountsTest do
     test "validates maximum values for password for security", %{user: user} do
       too_long = String.duplicate("db", 100)
       {:error, changeset} = Accounts.reset_user_password(user, %{password: too_long})
-      assert "should be at most 80 character(s)" in errors_on(changeset).password
+      assert "deve possuir no máximo 80 caracteres" in errors_on(changeset).password
     end
 
     test "updates the password", %{user: user} do

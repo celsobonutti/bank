@@ -26,7 +26,7 @@ defmodule BankWeb.UserResetPasswordControllerTest do
         })
 
       assert redirected_to(conn) == "/"
-      assert get_flash(conn, :info) =~ "If your e-mail is in our system"
+      assert get_flash(conn, :info) =~ "Caso seu e-mail esteja em nosso sistema"
       assert Repo.get_by!(Accounts.UserToken, user_id: user.id).context == "reset_password"
     end
 
@@ -37,7 +37,7 @@ defmodule BankWeb.UserResetPasswordControllerTest do
         })
 
       assert redirected_to(conn) == "/"
-      assert get_flash(conn, :info) =~ "If your e-mail is in our system"
+      assert get_flash(conn, :info) =~ "Caso seu e-mail esteja em nosso sistema"
       assert Repo.all(Accounts.UserToken) == []
     end
   end
@@ -60,7 +60,7 @@ defmodule BankWeb.UserResetPasswordControllerTest do
     test "does not render reset password with invalid token", %{conn: conn} do
       conn = get(conn, Routes.user_reset_password_path(conn, :edit, "oops"))
       assert redirected_to(conn) == "/"
-      assert get_flash(conn, :error) =~ "Reset password link is invalid or it has expired"
+      assert get_flash(conn, :error) =~ "Link de recuperação de senha expirado."
     end
   end
 
@@ -78,15 +78,15 @@ defmodule BankWeb.UserResetPasswordControllerTest do
       conn =
         put(conn, Routes.user_reset_password_path(conn, :update, token), %{
           "user" => %{
-            "password" => "new valid password",
-            "password_confirmation" => "new valid password"
+            "password" => "n32V1al10dP08sdo",
+            "password_confirmation" => "n32V1al10dP08sdo"
           }
         })
 
       assert redirected_to(conn) == Routes.user_session_path(conn, :new)
       refute get_session(conn, :user_token)
-      assert get_flash(conn, :info) =~ "Password reset successfully"
-      assert Accounts.get_user_by_email_and_password(user.email, "new valid password")
+      assert get_flash(conn, :info) =~ "Senha alterada com sucesso."
+      assert Accounts.get_user_by_email_and_password(user.email, "n32V1al10dP08sdo")
     end
 
     test "does not reset password on invalid data", %{conn: conn, token: token} do
@@ -100,14 +100,14 @@ defmodule BankWeb.UserResetPasswordControllerTest do
 
       response = html_response(conn, 200)
       assert response =~ "<h1>Reset password</h1>"
-      assert response =~ "deve possuir no mínimo 12 caracter(es)"
+      assert response =~ "deve possuir ao menos 12 caracteres"
       assert response =~ "does not match password"
     end
 
     test "does not reset password with invalid token", %{conn: conn} do
       conn = put(conn, Routes.user_reset_password_path(conn, :update, "oops"))
       assert redirected_to(conn) == "/"
-      assert get_flash(conn, :error) =~ "Reset password link is invalid or it has expired"
+      assert get_flash(conn, :error) =~ "Link de recuperação de senha expirado."
     end
   end
 end
