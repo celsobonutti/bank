@@ -8,6 +8,7 @@ defmodule Bank.Repo.Migrations.CreateUsersAuthTables do
       add :email, :citext, null: false
       add :document, :string, null: false
       add :balance, :decimal, null: false, default: 0
+      add :name, :string, null: false
       add :hashed_password, :string, null: false
       add :confirmed_at, :naive_datetime
       timestamps()

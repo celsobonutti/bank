@@ -4,6 +4,7 @@ defmodule Bank.Accounts.User do
 
   @derive {Inspect, except: [:password]}
   schema "users" do
+    field :name, :string
     field :email, :string
     field :document, :string
     field :balance, :decimal, default: 0
@@ -24,10 +25,11 @@ defmodule Bank.Accounts.User do
   """
   def registration_changeset(user, attrs) do
     user
-    |> cast(attrs, [:email, :password, :document])
+    |> cast(attrs, [:email, :password, :document, :name])
     |> validate_document()
     |> validate_email()
     |> validate_password()
+    |> validate_required([:name], message: "não pode estar em branco")
   end
 
   defp validate_email(changeset) do

@@ -14,6 +14,7 @@ defmodule Bank.AccountsFixtures do
     {:ok, user} =
       attrs
       |> Enum.into(%{
+        name: "Roberto Baptista",
         email: unique_user_email(),
         password: valid_user_password(),
         document: valid_user_document()

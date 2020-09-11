@@ -24,7 +24,7 @@ defmodule BankWeb.UserRegistrationControllerTest do
 
       conn =
         post(conn, Routes.user_registration_path(conn, :create), %{
-          "user" => %{"email" => email, "document" => valid_user_document(), "password" => valid_user_password()}
+          "user" => %{"name" => "Robrto Baptista", "email" => email, "document" => valid_user_document(), "password" => valid_user_password()}
         })
 
       assert get_session(conn, :user_token)
@@ -42,6 +42,7 @@ defmodule BankWeb.UserRegistrationControllerTest do
 
       response = html_response(conn, 200)
       assert response =~ "Cadastro"
+      assert response =~ "não pode estar em branco"
       assert response =~ "formato inválido"
       assert response =~ "documento inválido"
     end

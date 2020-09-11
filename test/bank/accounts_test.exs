@@ -59,16 +59,17 @@ defmodule Bank.AccountsTest do
     end
 
     test "validates email, document and password when given" do
-      {:error, changeset} = Accounts.register_user(%{email: "not valid", document: "not valid", password: "not valid"})
+      {:error, changeset} =
+        Accounts.register_user(%{email: "not valid", document: "not valid", password: "not valid"})
 
       assert %{
                email: ["formato inválido"],
                document: ["documento inválido"],
                password: [
-                "deve possuir ao menos um número ou caracter especial",
-                "deve possuir ao menos um caracter maiúsculo",
-                "deve possuir ao menos 12 caracteres"
-              ]
+                 "deve possuir ao menos um número ou caracter especial",
+                 "deve possuir ao menos um caracter maiúsculo",
+                 "deve possuir ao menos 12 caracteres"
+               ]
              } = errors_on(changeset)
     end
 
@@ -111,7 +112,14 @@ defmodule Bank.AccountsTest do
     test "registers users with a hashed password" do
       email = unique_user_email()
 
-      {:ok, user} = Accounts.register_user(%{email: email, document: valid_user_document(), password: valid_user_password()})
+      {:ok, user} =
+        Accounts.register_user(%{
+          name: "Roberto Baptista",
+          email: email,
+          document: valid_user_document(),
+          password: valid_user_password()
+        })
+
       assert user.email == email
       assert is_binary(user.hashed_password)
       assert is_nil(user.confirmed_at)
@@ -127,7 +135,14 @@ defmodule Bank.AccountsTest do
     end
 
     test "when a value is passed to register_user" do
-      {:ok, user} = Accounts.register_user(%{email: unique_user_email(), document: valid_user_document(), password: valid_user_password(), balance: 500.0})
+      {:ok, user} =
+        Accounts.register_user(%{
+          name: "Roberto Baptista",
+          email: unique_user_email(),
+          document: valid_user_document(),
+          password: valid_user_password(),
+          balance: 500.0
+        })
 
       assert user.balance == 0
     end
@@ -136,7 +151,7 @@ defmodule Bank.AccountsTest do
   describe "change_user_registration/2" do
     test "returns a changeset" do
       assert %Ecto.Changeset{} = changeset = Accounts.change_user_registration(%User{})
-      assert changeset.required == [:password, :email, :document]
+      assert changeset.required == [:name, :password, :email, :document]
     end
   end
 
@@ -271,11 +286,10 @@ defmodule Bank.AccountsTest do
 
       assert %{
                password: [
-                "deve possuir ao menos um número ou caracter especial",
-                "deve possuir ao menos um caracter maiúsculo",
-
-                "deve possuir ao menos 12 caracteres",
-                ],
+                 "deve possuir ao menos um número ou caracter especial",
+                 "deve possuir ao menos um caracter maiúsculo",
+                 "deve possuir ao menos 12 caracteres"
+               ],
                password_confirmation: ["does not match password"]
              } = errors_on(changeset)
     end
@@ -332,9 +346,10 @@ defmodule Bank.AccountsTest do
       assert_raise Ecto.ConstraintError, fn ->
         Repo.insert!(%UserToken{
           token: user_token.token,
-          user_id: user_fixture(%{
-            document: another_valid_document()
-          }).id,
+          user_id:
+            user_fixture(%{
+              document: another_valid_document()
+            }).id,
           context: "session"
         })
       end
@@ -487,10 +502,10 @@ defmodule Bank.AccountsTest do
 
       assert %{
                password: [
-                  "deve possuir ao menos um número ou caracter especial",
-                  "deve possuir ao menos um caracter maiúsculo",
-                  "deve possuir ao menos 12 caracteres"
-                ],
+                 "deve possuir ao menos um número ou caracter especial",
+                 "deve possuir ao menos um caracter maiúsculo",
+                 "deve possuir ao menos 12 caracteres"
+               ],
                password_confirmation: ["does not match password"]
              } = errors_on(changeset)
     end
