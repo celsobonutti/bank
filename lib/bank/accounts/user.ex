@@ -113,6 +113,21 @@ defmodule Bank.Accounts.User do
   end
 
   @doc """
+  A user changeset for changing balance
+  """
+  def balance_increase_changeset(user, quantity) do
+    user
+    |> change(%{
+      balance: Decimal.add(user.balance, Decimal.new(quantity))
+    })
+    |> validate_number(:balance,
+      greater_than: user.balance,
+      message: "deve ser maior que o saldo original"
+    )
+    |> validate_current_user_id()
+  end
+
+  @doc """
   Verifies the password.
 
   If there is no user or the user doesn't have a password, we call

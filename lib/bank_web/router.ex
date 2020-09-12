@@ -68,6 +68,8 @@ defmodule BankWeb.Router do
     pipe_through [:api, :require_api_authentication]
 
     get "/users", UserController, :show
+    post "/deposits", DepositController, :create
+    get "/deposits/:id", DepositController, :show
   end
 
   scope "/api", BankWeb do
