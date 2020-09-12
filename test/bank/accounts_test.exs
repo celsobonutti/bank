@@ -131,7 +131,7 @@ defmodule Bank.AccountsTest do
     test "when created without a balance" do
       %{balance: balance} = user_fixture()
 
-      assert balance == 0
+      assert Decimal.eq?(balance, 0)
     end
 
     test "when a value is passed to register_user" do
@@ -144,7 +144,7 @@ defmodule Bank.AccountsTest do
           balance: 500.0
         })
 
-      assert user.balance == 0
+        assert Decimal.eq?(user.balance, 0)
     end
   end
 
@@ -169,7 +169,7 @@ defmodule Bank.AccountsTest do
 
     test "requires email to change", %{user: user} do
       {:error, changeset} = Accounts.apply_user_email(user, valid_user_password(), %{})
-      assert %{email: ["did not change"]} = errors_on(changeset)
+      assert %{email: ["não mudou"]} = errors_on(changeset)
     end
 
     test "validates email", %{user: user} do
@@ -192,7 +192,7 @@ defmodule Bank.AccountsTest do
       {:error, changeset} =
         Accounts.apply_user_email(user, "invalid", %{email: unique_user_email()})
 
-      assert %{current_password: ["is not valid"]} = errors_on(changeset)
+      assert %{current_password: ["senha inválida"]} = errors_on(changeset)
     end
 
     test "applies the e-mail without persisting it", %{user: user} do
@@ -290,7 +290,7 @@ defmodule Bank.AccountsTest do
                  "deve possuir ao menos um caracter maiúsculo",
                  "deve possuir ao menos 12 caracteres"
                ],
-               password_confirmation: ["does not match password"]
+               password_confirmation: ["senhas não conferem"]
              } = errors_on(changeset)
     end
 
@@ -307,7 +307,7 @@ defmodule Bank.AccountsTest do
       {:error, changeset} =
         Accounts.update_user_password(user, "invalid", %{password: valid_user_password()})
 
-      assert %{current_password: ["is not valid"]} = errors_on(changeset)
+      assert %{current_password: ["senha inválida"]} = errors_on(changeset)
     end
 
     test "updates the password", %{user: user} do
@@ -506,7 +506,7 @@ defmodule Bank.AccountsTest do
                  "deve possuir ao menos um caracter maiúsculo",
                  "deve possuir ao menos 12 caracteres"
                ],
-               password_confirmation: ["does not match password"]
+               password_confirmation: ["senhas não conferem"]
              } = errors_on(changeset)
     end
 

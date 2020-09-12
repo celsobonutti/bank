@@ -101,7 +101,7 @@ defmodule BankWeb.UserResetPasswordControllerTest do
       response = html_response(conn, 200)
       assert response =~ "<h1>Reset password</h1>"
       assert response =~ "deve possuir ao menos 12 caracteres"
-      assert response =~ "does not match password"
+      assert response =~ "senhas não conferem"
     end
 
     test "does not reset password with invalid token", %{conn: conn} do

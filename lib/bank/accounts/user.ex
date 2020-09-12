@@ -2,12 +2,14 @@ defmodule Bank.Accounts.User do
   use Ecto.Schema
   import Ecto.Changeset
 
+  alias Bank.Accounts
+
   @derive {Inspect, except: [:password]}
   schema "users" do
     field :name, :string
     field :email, :string
     field :document, :string
-    field :balance, :decimal, default: 0
+    field :balance, :decimal, default: Decimal.new("0.00")
     field :password, :string, virtual: true
     field :hashed_password, :string
     field :confirmed_at, :naive_datetime
@@ -46,8 +48,12 @@ defmodule Bank.Accounts.User do
     |> validate_required([:password], message: "não pode estar em branco")
     |> validate_length(:password, min: 12, message: "deve possuir ao menos 12 caracteres")
     |> validate_length(:password, max: 80, message: "deve possuir no máximo 80 caracteres")
-    |> validate_format(:password, ~r/[a-z]/, message: "deve possuir ao menos um caracter minúsculo")
-    |> validate_format(:password, ~r/[A-Z]/, message: "deve possuir ao menos um caracter maiúsculo")
+    |> validate_format(:password, ~r/[a-z]/,
+      message: "deve possuir ao menos um caracter minúsculo"
+    )
+    |> validate_format(:password, ~r/[A-Z]/,
+      message: "deve possuir ao menos um caracter maiúsculo"
+    )
     |> validate_format(:password, ~r/[!?@#$%^&*_0-9]/,
       message: "deve possuir ao menos um número ou caracter especial"
     )
@@ -59,7 +65,9 @@ defmodule Bank.Accounts.User do
     |> validate_required([:document], message: "não pode estar em branco")
     |> validate_format(:document, ~r/[0-9]{11}/, message: "documento inválido")
     |> validate_document_format()
-    |> unsafe_validate_unique(:document, Bank.Repo, message: "já existe uma conta com este documento")
+    |> unsafe_validate_unique(:document, Bank.Repo,
+      message: "já existe uma conta com este documento"
+    )
     |> unique_constraint(:document)
   end
 
@@ -82,7 +90,7 @@ defmodule Bank.Accounts.User do
     |> validate_email()
     |> case do
       %{changes: %{email: _}} = changeset -> changeset
-      %{} = changeset -> add_error(changeset, :email, "did not change")
+      %{} = changeset -> add_error(changeset, :email, "não foi alterado")
     end
   end
 
@@ -92,7 +100,7 @@ defmodule Bank.Accounts.User do
   def password_changeset(user, attrs) do
     user
     |> cast(attrs, [:password])
-    |> validate_confirmation(:password, message: "does not match password")
+    |> validate_confirmation(:password, message: "senhas não conferem")
     |> validate_password()
   end
 
@@ -127,7 +135,18 @@ defmodule Bank.Accounts.User do
     if valid_password?(changeset.data, password) do
       changeset
     else
-      add_error(changeset, :current_password, "is not valid")
+      add_error(changeset, :current_password, "senha inválida")
+    end
+  end
+
+  @doc """
+  Validates if the user_id in the changeset exists in the DB.
+  """
+  def validate_current_user_id(changeset) do
+    if get_field(changeset, :id) |> Accounts.user_exists?() do
+      changeset
+    else
+      add_error(changeset, :id, "usuário inexistente")
     end
   end
 

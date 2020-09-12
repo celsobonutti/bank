@@ -59,6 +59,12 @@ defmodule Bank.Accounts do
   """
   def get_user!(id), do: Repo.get!(User, id)
 
+  @doc """
+  Checks if a user with the user exists
+  """
+
+  def user_exists?(id), do: Repo.exists?(from u in User, where: u.id == ^id)
+
   ## User registration
 
   @doc """

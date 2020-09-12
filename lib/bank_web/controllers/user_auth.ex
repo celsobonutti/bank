@@ -139,6 +139,18 @@ defmodule BankWeb.UserAuth do
     end
   end
 
+  def require_api_authentication(conn, _opts) do
+    if conn.assigns[:current_user] do
+      conn
+    else
+      conn
+      |> put_status(401)
+      |> put_view(BankWeb.ErrorView)
+      |> render(:"401")
+      |> halt()
+    end
+  end
+
   defp maybe_store_return_to(%{method: "GET", request_path: request_path} = conn) do
     put_session(conn, :user_return_to, request_path)
   end

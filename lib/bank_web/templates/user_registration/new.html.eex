@@ -6,11 +6,11 @@
     <p class="auth__error">Ops, parece que algo deu errado! Cheque os erros abaixo:</p>
   <% end %>
 
-  <%= label f, :name, [class: "auth__label"] %>
+  <%= label f, :name, "Nome", [class: "auth__label"] %>
   <%= text_input f, :name, required: true %>
   <%= error_tag f, :name %>
 
-  <%= label f, :email, [class: "auth__label"] %>
+  <%= label f, :email, "E-mail", [class: "auth__label"] %>
   <%= email_input f, :email, required: true %>
   <%= error_tag f, :email %>
 
@@ -18,7 +18,7 @@
   <%= text_input f, :document, required: true %>
   <%= error_tag f, :document %>
 
-  <%= label f, :password, [class: "auth__label"] %>
+  <%= label f, :password, "Senha", [class: "auth__label"] %>
   <%= password_input f, :password, required: true %>
   <%= error_tag f, :password %>
 

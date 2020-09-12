@@ -65,6 +65,12 @@ defmodule BankWeb.Router do
   end
 
   scope "/api", BankWeb do
+    pipe_through [:api, :require_api_authentication]
+
+    get "/users", UserController, :show
+  end
+
+  scope "/api", BankWeb do
     pipe_through [:api, :require_authenticated_user]
 
     get "/log_out", UserSessionController, :delete
