@@ -3,7 +3,7 @@
   color: var(--text);
 }
 
-.container {
+main {
   max-width: 1300px;
   margin: auto;
   min-height: 100vh;
@@ -28,4 +28,13 @@ button {
 
 body {
   background-color: var(--background);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }

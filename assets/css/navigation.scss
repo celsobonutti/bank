@@ -1,0 +1,32 @@
+.menu {
+  margin-top: 2px;
+  background-color: #1e1e24;
+  display: flex;
+  flex-direction: row;
+  position: relative;
+
+  &__group {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+  }
+  
+  &__item {
+    border-radius: 0;
+    background-color: transparent;
+    box-sizing: border-box;
+    width: 100%;
+    flex-grow: 1;
+    text-transform: uppercase;
+
+    &:focus {
+      outline: 2px solid var(--primary);
+      z-index: 2;
+    }
+  }
+
+  &__item--active {
+    background-color: transparent;
+    border-bottom: 1px solid var(--tertiary);
+  }
+}

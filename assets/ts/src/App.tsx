@@ -1,14 +1,17 @@
 import React from 'react';
 import { hot } from 'react-hot-loader';
+import { UserProvider } from './providers/UserProvider';
+import { BrowserRouter } from 'react-router-dom';
+
+import { Router } from './components/containers/Router';
 
 const AppComponent = () => {
   return (
-    <div>
-      <h1>Welcome to React</h1>
-      <p>
-        <a href="/api/log_out">Sair</a>
-      </p>
-    </div>
+    <UserProvider>
+      <BrowserRouter basename="/app">
+        <Router />
+      </BrowserRouter>
+    </UserProvider>
   );
 };
 

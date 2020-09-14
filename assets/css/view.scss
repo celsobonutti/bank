@@ -1,0 +1,38 @@
+.view {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-areas:
+    "main"
+    "side";
+
+  @include media('screen', '>=tablet') {
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-areas: 
+      "main main side";
+  }
+
+  @include media('screen', '>=desktop') {
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-areas: 
+      "main main main side";
+  }
+
+  .main {
+    grid-area: main;
+    padding: 1em;
+  }
+
+  .side {
+    grid-area: side;
+    padding: 1em;
+
+    @include media('>=phone', '<tablet') {
+      border-top: 1px solid var(--secondary);
+    }
+
+    @include media('>=tablet') {
+      border-left: 1px solid var(--secondary);
+    }
+  }
+}

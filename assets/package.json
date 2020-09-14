@@ -6,26 +6,37 @@
     "deploy": "cp -R static/* ../priv/static/ && parcel build ts/index.tsx css/app.scss --out-dir ../priv/static --public-url / --no-cache",
     "watch": "cp -R static/* ../priv/static/ && parcel watch ts/index.tsx css/app.scss --out-dir ../priv/static --public-url /",
     "prettier:write": "prettier --write \"**/*.{ts,.tsx}\"",
-    "lint": "eslint --ext .ts,.tsx ./"
+    "lint": "eslint --ext .ts,.tsx ./",
+    "test": "jest"
   },
   "dependencies": {
     "autoprefixer": "^9.8.6",
+    "history": "^5.0.0",
     "normalize.css": "^8.0.1",
     "phoenix": "file:../deps/phoenix",
     "phoenix_html": "file:../deps/phoenix_html",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
-    "react-hot-loader": "^4.12.21"
+    "react-hot-loader": "^4.12.21",
+    "react-query": "^2.16.1",
+    "react-router-dom": "^5.2.0",
+    "reakit": "^1.2.4"
   },
   "devDependencies": {
     "@babel/core": "^7.0.0",
     "@babel/preset-env": "^7.0.0",
     "@babel/preset-react": "^7.10.4",
+    "@babel/preset-typescript": "^7.10.4",
     "@react-native-community/eslint-config": "^2.0.0",
+    "@testing-library/jest-dom": "^5.11.4",
+    "@testing-library/react": "^11.0.2",
+    "@testing-library/react-hooks": "^3.4.1",
     "@types/phoenix": "^1.5.0",
     "@types/react": "^16.9.49",
     "@types/react-dom": "^16.9.8",
+    "@types/react-router-dom": "^5.1.5",
     "@typescript-eslint/eslint-plugin": "^4.0.1",
+    "clsx": "^1.1.1",
     "eslint": "^7.7.0",
     "eslint-config-airbnb-typescript": "^9.0.0",
     "eslint-config-prettier": "^6.11.0",
@@ -33,10 +44,21 @@
     "eslint-plugin-jsx-a11y": "^6.3.1",
     "eslint-plugin-react": "^7.20.6",
     "jest": "^26.4.2",
+    "jest-fetch-mock": "^3.0.3",
     "parcel": "^1.12.4",
     "parcel-plugin-stdin": "^0.1.1",
     "prettier": "^2.1.1",
     "sass": "^1.26.10",
     "typescript": "^4.0.2"
+  },
+  "jest": {
+    "transformIgnorePatterns": [
+      "node_modules/(?!(jest-)?react-native|react-clone-referenced-element|@react-native-community|expo(nent)?|@expo(nent)?/.*|react-navigation|@react-navigation/.*|@unimodules/.*|unimodules|sentry-expo|native-base|@sentry/.*)"
+    ],
+    "automock": false,
+    "setupFilesAfterEnv": [
+      "<rootDir>/setupTests.ts",
+      "@testing-library/jest-dom/extend-expect"
+    ]
   }
 }
