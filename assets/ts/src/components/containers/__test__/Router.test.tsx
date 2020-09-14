@@ -1,37 +1,54 @@
 import React from 'react';
-import { Router } from 'react-router-dom';
-import { createMemoryHistory } from 'history';
-import { render, fireEvent } from '@testing-library/react';
+import { MemoryRouter } from 'react-router-dom';
+import { render, fireEvent, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 import fetchMock from 'jest-fetch-mock';
 
 import { Router as AppRouter } from '../Router';
-import { User } from '../../../types/user';
+import { UserProvider } from '../../../providers/UserProvider';
+
+const user = {
+  name: 'Roberto Baptista',
+  balance: 40.0,
+  email: 'roberto.baptista@gmail.com',
+  id: 45
+};
 
 describe('<Router />', () => {
-  test('app rendering/navigating', () => {
-    const history = createMemoryHistory();
-
+  test('app rendering/navigating', async () => {
     fetchMock.mockResponse(
       JSON.stringify({
-        data: {
-          name: 'Roberto Baptista',
-          balance: 40.0,
-          email: 'roberto.baptista@gmail.com',
-          id: 45
-        }
+        data: user
       })
     );
 
-    const { getByText } = render(
-      <Router history={history}>
-        <AppRouter />
-      </Router>
+    const { getByText, getByTestId } = render(
+      <UserProvider>
+        <MemoryRouter>
+          <AppRouter />
+        </MemoryRouter>
+      </UserProvider>
     );
+
+    await waitFor(() => getByText('Perfil'));
 
     const profileButton = getByText('Perfil');
     const depositButton = getByText('Depósitos');
+    const profileHeader = getByTestId('profile-header');
+    const profileBalance = getByTestId('profile-balance');
 
     expect(profileButton).toHaveClass('menu__item--active');
+    expect(depositButton).not.toHaveClass('menu__item--active');
+    expect(profileHeader).toHaveTextContent(
+      'Olá, ' + user.name + ', tudo bem?'
+    );
+    expect(profileBalance).toHaveTextContent('Seu saldo é de ');
+
+    fireEvent.click(depositButton);
+
+    const depositHeader = getByTestId('deposit-header');
+
+    expect(depositButton).toHaveClass('menu__item--active');
+    expect(depositHeader).toHaveTextContent('Fazer um depósito');
   });
 });

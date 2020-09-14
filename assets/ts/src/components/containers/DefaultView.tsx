@@ -7,9 +7,9 @@ type DefaultViewProps = {
 
 export const DefaultView = ({ main, side }: DefaultViewProps) => {
   return (
-    <main className="view">
-      <section className="main">{main}</section>
-      <section className="side">{side}</section>
-    </main>
+    <div className="view">
+      <main className="main">{main}</main>
+      <aside className="side">{side}</aside>
+    </div>
   );
 };

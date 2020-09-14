@@ -23,7 +23,7 @@
     "reakit": "^1.2.4"
   },
   "devDependencies": {
-    "@babel/core": "^7.0.0",
+    "@babel/core": "^7.0.0-0",
     "@babel/preset-env": "^7.0.0",
     "@babel/preset-react": "^7.10.4",
     "@babel/preset-typescript": "^7.10.4",
@@ -49,7 +49,8 @@
     "parcel-plugin-stdin": "^0.1.1",
     "prettier": "^2.1.1",
     "sass": "^1.26.10",
-    "typescript": "^4.0.2"
+    "typescript": "^4.0.2",
+    "wait-for-expect": "^3.0.2"
   },
   "jest": {
     "transformIgnorePatterns": [

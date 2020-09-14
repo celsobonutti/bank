@@ -12,12 +12,8 @@ export const Router = () => {
     <>
       <Navbar user={user} />
       <Switch>
-        <Route exact path="/">
-          <Profile user={user} />
-        </Route>
-        <Route path="/deposit">
-          <Deposit />
-        </Route>
+        <Route exact path="/" component={Profile} />
+        <Route path="/deposit" component={Deposit} />
       </Switch>
     </>
   );

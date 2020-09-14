@@ -4,7 +4,7 @@ import { User } from '../types/user';
 import { protectedFetch } from '../utils/protectedFetch';
 
 const getProfile = async () => {
-  const profile = await protectedFetch<User>('/api/users');
+  const profile = await protectedFetch<User>('/v1/api/users');
   return profile;
 };
 
