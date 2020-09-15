@@ -8,7 +8,7 @@ defmodule BankWeb.UserRegistrationControllerTest do
       conn = get(conn, Routes.user_registration_path(conn, :new))
       response = html_response(conn, 200)
       assert response =~ "<h1 class=\"auth__header\">Cadastro</h1>"
-      assert response =~ "<label class=\"auth__label\" for=\"user_document\">CPF</label>"
+      assert response =~ "<label class=\"form__label\" for=\"user_document\">CPF</label>"
     end
 
     test "redirects if already logged in", %{conn: conn} do

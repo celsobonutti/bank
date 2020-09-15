@@ -14,6 +14,10 @@ defmodule BankWeb.Router do
 
   pipeline :api do
     plug :accepts, ["json"]
+    plug Plug.Parsers, parsers: [:json],
+                       pass: ["application/json", "text/json"],
+                       json_decoder: Jason
+
     plug :fetch_session
     plug :fetch_flash
     plug :fetch_current_user
@@ -70,6 +74,7 @@ defmodule BankWeb.Router do
     get "/users", UserController, :show
     post "/deposits", DepositController, :create
     get "/deposits/:id", DepositController, :show
+    get "/deposits", DepositController, :index
   end
 
   scope "/v1/api", BankWeb do

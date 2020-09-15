@@ -3,27 +3,27 @@
 
   <%= form_for @changeset, Routes.user_registration_path(@conn, :create), [class: "auth__form"], fn f -> %>
   <%= if @changeset.action do %>
-    <p class="auth__error">Ops, parece que algo deu errado! Cheque os erros abaixo:</p>
+    <p class="form__error">Ops, parece que algo deu errado! Cheque os erros abaixo:</p>
   <% end %>
 
-  <%= label f, :name, "Nome", [class: "auth__label"] %>
+  <%= label f, :name, "Nome", [class: "form__label"] %>
   <%= text_input f, :name, required: true %>
   <%= error_tag f, :name %>
 
-  <%= label f, :email, "E-mail", [class: "auth__label"] %>
+  <%= label f, :email, "E-mail", [class: "form__label"] %>
   <%= email_input f, :email, required: true %>
   <%= error_tag f, :email %>
 
-  <%= label f, :document, "CPF", [class: "auth__label"] %>
+  <%= label f, :document, "CPF", [class: "form__label"] %>
   <%= text_input f, :document, required: true %>
   <%= error_tag f, :document %>
 
-  <%= label f, :password, "Senha", [class: "auth__label"] %>
+  <%= label f, :password, "Senha", [class: "form__label"] %>
   <%= password_input f, :password, required: true %>
   <%= error_tag f, :password %>
 
   <div>
-    <%= submit "Cadastrar", [class: "auth__button"] %>
+    <%= submit "Cadastrar", [class: "form__button"] %>
   </div>
   <% end %>
 

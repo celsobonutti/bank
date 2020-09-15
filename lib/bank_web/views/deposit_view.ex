@@ -6,9 +6,15 @@ defmodule BankWeb.DepositView do
     %{data: render_one(deposit, DepositView, "deposit.json")}
   end
 
+  def render("index.json", %{deposits: deposits}) do
+    %{data: render_many(deposits, DepositView, "deposit.json")}
+  end
+
   def render("deposit.json", %{deposit: deposit}) do
     %{id: deposit.id,
       user_id: deposit.user_id,
-      quantity: deposit.quantity}
+      quantity: deposit.quantity,
+      date: deposit.inserted_at
+    }
   end
 end

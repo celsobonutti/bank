@@ -3,13 +3,13 @@
 
   <%= form_for @conn, Routes.user_session_path(@conn, :create), [as: :user, class: "auth__form"], fn f -> %>
     <%= if @error_message do %>
-      <p class="auth__error"><%= @error_message %></p>
+      <p class="form__error"><%= @error_message %></p>
     <% end %>
 
-    <%= label f, :email, "E-mail", [class: "auth__label"] %>
+    <%= label f, :email, "E-mail", [class: "form__label"] %>
     <%= email_input f, :email, required: true %>
 
-    <%= label f, :password, "Senha", [class: "auth__label"] %>
+    <%= label f, :password, "Senha", [class: "form__label"] %>
     <%= password_input f, :password, required: true %>
     <%= link "Esqueceu sua senha?", to: Routes.user_reset_password_path(@conn, :new) %>
 
@@ -19,7 +19,7 @@
     </div>
 
     <div>
-      <%= submit "Entrar", [class: "auth__button"] %>
+      <%= submit "Entrar", [class: "form__button"] %>
     </div>
   <% end %>
 

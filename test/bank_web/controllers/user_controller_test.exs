@@ -14,7 +14,7 @@ defmodule BankWeb.UserControllerTest do
       assert %{
         "id" => user.id,
         "name" => user.name,
-        "balance" => Decimal.to_string(user.balance),
+        "balance" => Decimal.to_float(user.balance),
         "email" => user.email
       } == json_response(conn, 200)["data"]
     end

@@ -76,4 +76,20 @@ defmodule Bank.Transactions do
   def change_deposit(%Deposit{} = deposit, attrs \\ %{}) do
     Deposit.changeset(deposit, attrs)
   end
+
+  @doc """
+  Gets the list of an user's deposit.
+
+  ## Example
+
+    iex> get_user_deposits(user_id)
+    {:ok, list(%Deposit{})}
+
+    iex> get_user_deposits(user_id)
+    {:ok, []}
+  """
+  def get_user_deposits(user_id) do
+    query = from d in Deposit, where: d.user_id == ^user_id, order_by: [desc: :inserted_at]
+    Repo.all(query)
+  end
 end

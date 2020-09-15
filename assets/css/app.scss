@@ -6,3 +6,10 @@
 @import 'auth.scss';
 @import 'navigation.scss';
 @import 'view.scss';
+@import 'form.scss';
+@import 'snackbar.scss';
+@import 'transaction.scss';
+
+.deposit__form {
+  max-width: 400px;
+}

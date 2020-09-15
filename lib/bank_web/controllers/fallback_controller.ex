@@ -33,4 +33,11 @@ defmodule BankWeb.FallbackController do
     |> put_view(BankWeb.ErrorView)
     |> render(:"401")
   end
+
+  def call(conn, nil) do
+    conn
+    |> put_status(500)
+    |> put_view(BankWeb.ErrorView)
+    |> render(:"500")
+  end
 end

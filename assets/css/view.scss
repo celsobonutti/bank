@@ -3,19 +3,19 @@
   display: grid;
   grid-template-columns: 1fr;
   grid-template-areas:
-    "main"
-    "side";
+    "side"
+    "main";
 
   @include media('screen', '>=tablet') {
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(2, 1fr);
     grid-template-areas: 
-      "main main side";
+      "main side";
   }
 
   @include media('screen', '>=desktop') {
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(3, 1fr);
     grid-template-areas: 
-      "main main main side";
+      "main main side";
   }
 
   .main {

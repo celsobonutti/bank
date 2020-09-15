@@ -6,6 +6,7 @@ import fetchMock from 'jest-fetch-mock';
 
 import { Router as AppRouter } from '../Router';
 import { UserProvider } from '../../../providers/UserProvider';
+import { SnackbarProvider } from '../../../providers/SnackbarProvider';
 
 const user = {
   name: 'Roberto Baptista',
@@ -24,9 +25,11 @@ describe('<Router />', () => {
 
     const { getByText, getByTestId } = render(
       <UserProvider>
-        <MemoryRouter>
-          <AppRouter />
-        </MemoryRouter>
+        <SnackbarProvider>
+          <MemoryRouter>
+            <AppRouter />
+          </MemoryRouter>
+        </SnackbarProvider>
       </UserProvider>
     );
 

@@ -11,27 +11,10 @@
     margin-bottom: 2rem;
   }
 
-  &__error {
-    color: var(--error);
-    font-size: 1.2rem;
-  }
-
-  &__label {
-    font-weight: 500;
-    font-size: 1.2rem;
-    margin-bottom: 0.2rem;
-  }
-
-  &__form{
+  &__form {
     display: flex;
     flex-direction: column;
     gap: 1.2em;
-  }
-
-  &__button {
-    width: 100%;
-    text-transform: uppercase;
-    font-size: 1.2rem;
   }
 
   &__link {
@@ -41,7 +24,7 @@
 
 .remember {
   &__checkbox {
-    margin-right: 1rem;    
+    margin-right: 1rem;
   }
 
   &__label {

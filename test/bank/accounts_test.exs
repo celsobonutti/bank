@@ -169,7 +169,7 @@ defmodule Bank.AccountsTest do
 
     test "requires email to change", %{user: user} do
       {:error, changeset} = Accounts.apply_user_email(user, valid_user_password(), %{})
-      assert %{email: ["não mudou"]} = errors_on(changeset)
+      assert %{email: ["não foi alterado"]} = errors_on(changeset)
     end
 
     test "validates email", %{user: user} do
