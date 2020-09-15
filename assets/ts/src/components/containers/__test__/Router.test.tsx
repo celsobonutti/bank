@@ -37,11 +37,13 @@ describe('<Router />', () => {
 
     const profileButton = getByText('Perfil');
     const depositButton = getByText('Depósitos');
+    const withdrawalButton = getByText('Saques');
     const profileHeader = getByTestId('profile-header');
     const profileBalance = getByTestId('profile-balance');
 
     expect(profileButton).toHaveClass('menu__item--active');
     expect(depositButton).not.toHaveClass('menu__item--active');
+    expect(withdrawalButton).not.toHaveClass('menu__item--active');
     expect(profileHeader).toHaveTextContent(
       'Olá, ' + user.name + ', tudo bem?'
     );
@@ -53,5 +55,12 @@ describe('<Router />', () => {
 
     expect(depositButton).toHaveClass('menu__item--active');
     expect(depositHeader).toHaveTextContent('Fazer um depósito');
+
+    fireEvent.click(withdrawalButton);
+
+    const withdrawalHeader = getByTestId('withdrawal-header');
+
+    expect(withdrawalButton).toHaveClass('menu__item--active');
+    expect(withdrawalHeader).toHaveTextContent('Fazer um saque');
   });
 });

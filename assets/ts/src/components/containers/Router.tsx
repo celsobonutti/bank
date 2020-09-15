@@ -1,7 +1,6 @@
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
-import { Deposit } from '../../pages/Deposit/Deposit';
-import { Profile } from '../../pages/Profile/Profile';
+import { Deposit, Profile, Withdrawal } from '../../pages';
 import { useProfile } from '../../providers/UserProvider';
 import { Navbar } from '../elements/Navbar';
 
@@ -14,6 +13,7 @@ export const Router = () => {
       <Switch>
         <Route exact path="/" component={Profile} />
         <Route path="/deposit" component={Deposit} />
+        <Route path="/withdrawal" component={Withdrawal} />
       </Switch>
     </>
   );

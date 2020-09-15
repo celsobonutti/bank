@@ -42,6 +42,7 @@ export const TransactionCard = ({ type, data }: TransactionCardProps) => {
           </>
         );
       case 'withdrawal':
+        const withdrawal = data as Withdrawal;
         return (
           <>
             <h3>Saque</h3>
@@ -52,7 +53,12 @@ export const TransactionCard = ({ type, data }: TransactionCardProps) => {
                 currency: 'BRL'
               }).format(data.quantity)}
             </h4>
-            <h5>Realizado às {(data as Withdrawal).date.toString()}</h5>
+            <h5>
+              Realizado em{' '}
+              <b>
+                {Intl.DateTimeFormat('pt-BR').format(new Date(withdrawal.date))}
+              </b>
+            </h5>
           </>
         );
       case 'payment':

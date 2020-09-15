@@ -1,1 +1,1 @@
-export type Route = '/' | '/profile' | '/deposit';
+export type Route = '/' | '/deposit' | '/withdrawal';
