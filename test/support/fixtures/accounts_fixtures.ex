@@ -20,6 +20,14 @@ defmodule Bank.AccountsFixtures do
         document: valid_user_document()
       })
       |> Bank.Accounts.register_user()
+    user
+  end
+
+  def user_with_balance_fixture(attrs \\ %{}) do
+    {:ok, user} =
+      attrs
+      |> user_fixture()
+      |> Bank.Accounts.increase_user_balance("200.0")
 
     user
   end

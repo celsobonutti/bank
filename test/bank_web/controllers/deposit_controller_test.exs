@@ -37,7 +37,7 @@ defmodule BankWeb.DepositControllerTest do
       assert %{
                "id" => id,
                "user_id" => ^user_id,
-               "quantity" => "120.5"
+               "quantity" => "120.5",
              } = json_response(conn, 200)["data"]
     end
 
@@ -56,7 +56,8 @@ defmodule BankWeb.DepositControllerTest do
       assert %{
         "id" => deposit.id,
         "quantity" => Decimal.to_string(deposit.quantity),
-        "user_id" => user.id
+        "user_id" => user.id,
+        "date" => NaiveDateTime.to_string(deposit.inserted_at)
       } == json_response(conn, 200)["data"]
     end
 

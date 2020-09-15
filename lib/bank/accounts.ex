@@ -352,4 +352,40 @@ defmodule Bank.Accounts do
       {:error, :user, changeset, _} -> {:error, changeset}
     end
   end
+
+  @doc """
+  Increases user's balance
+
+  Used only for tests
+
+  ##Examples
+
+    iex> increase_user_balance(user, "200.5")
+    {:ok, %User{}}
+
+    iex> increase_user_balance(user, "-10.0")
+    {:error, %Ecto.Changeset{}}
+  """
+  def increase_user_balance(user, value) do
+    User.balance_increase_changeset(user, value)
+    |> Repo.update()
+  end
+
+  @doc """
+  Decreases user's balance
+
+  Used only for tests
+
+  ##Examples
+
+    iex> decrease_user_balance(user, "200.5")
+    {:ok, %User{}}
+
+    iex> decrease_user_balance(user, "-10.0")
+    {:error, %Ecto.Changeset{}}
+  """
+  def decrease_user_balance(user, value) do
+    User.balance_decrease_changeset(user, value)
+    |> Repo.update()
+  end
 end

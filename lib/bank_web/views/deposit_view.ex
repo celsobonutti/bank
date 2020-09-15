@@ -14,7 +14,7 @@ defmodule BankWeb.DepositView do
     %{id: deposit.id,
       user_id: deposit.user_id,
       quantity: deposit.quantity,
-      date: deposit.inserted_at
+      date: NaiveDateTime.to_string(deposit.inserted_at)
     }
   end
 end

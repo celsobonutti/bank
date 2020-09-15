@@ -1,8 +1,8 @@
-defmodule BankWeb.DepositController do
+defmodule BankWeb.WithdrawalController do
   use BankWeb, :controller
 
   alias Bank.Transactions
-  alias Bank.Transactions.Deposit
+  alias Bank.Transactions.Withdrawal
   alias Bank.Accounts.User
 
   action_fallback BankWeb.FallbackController
@@ -16,21 +16,21 @@ defmodule BankWeb.DepositController do
         }
       end
 
-    with {:ok, %Deposit{} = deposit} <- Transactions.create_deposit(params) do
+    with {:ok, %Withdrawal{} = withdrawal} <- Transactions.create_withdrawal(params) do
       conn
       |> put_status(:created)
-      |> put_resp_header("location", Routes.deposit_path(conn, :show, deposit.id))
-      |> render("show.json", deposit: deposit)
+      |> put_resp_header("location", Routes.withdrawal_path(conn, :show, withdrawal.id))
+      |> render("show.json", withdrawal: withdrawal)
     end
   end
 
   def show(conn, %{"id" => id}) do
-    deposit = Transactions.get_deposit!(id)
+    withdrawal = Transactions.get_withdrawal!(id)
 
     current_user = conn.assigns[:current_user]
 
-    if deposit.user_id == current_user.id do
-      render(conn, "show.json", deposit: deposit)
+    if withdrawal.user_id == current_user.id do
+      render(conn, "show.json", withdrawal: withdrawal)
     else
       {:error, :forbidden}
     end
@@ -39,7 +39,7 @@ defmodule BankWeb.DepositController do
   def index(conn, _params) do
     if conn.assigns[:current_user] do
       %User{id: user_id} = conn.assigns[:current_user]
-       render(conn, "index.json", deposits: Transactions.get_user_deposits(user_id))
+       render(conn, "index.json", withdrawals: Transactions.get_user_withdrawals(user_id))
     else
       {:error, :unauthorized}
     end

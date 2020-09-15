@@ -61,6 +61,7 @@ defmodule Bank.Transactions do
     |> case do
       {:ok, %{deposit: deposit}} -> {:ok, deposit}
       {:error, :user, changeset, _} -> {:error, changeset}
+      {:error, :deposit, changeset , _} -> {:error, changeset}
     end
   end
 
@@ -90,6 +91,94 @@ defmodule Bank.Transactions do
   """
   def get_user_deposits(user_id) do
     query = from d in Deposit, where: d.user_id == ^user_id, order_by: [desc: :inserted_at]
+    Repo.all(query)
+  end
+
+  alias Bank.Transactions.Withdrawal
+
+  @doc """
+  Returns the list of withdrawals.
+
+  ## Examples
+
+      iex> list_withdrawals()
+      [%Withdrawal{}, ...]
+
+  """
+  def list_withdrawals do
+    Repo.all(Withdrawal)
+  end
+
+  @doc """
+  Gets a single withdrawal.
+
+  Raises `Ecto.NoResultsError` if the Withdrawal does not exist.
+
+  ## Examples
+
+      iex> get_withdrawal!(123)
+      %Withdrawal{}
+
+      iex> get_withdrawal!(456)
+      ** (Ecto.NoResultsError)
+
+  """
+  def get_withdrawal!(id), do: Repo.get!(Withdrawal, id)
+
+  @doc """
+  Creates a withdrawal.
+
+  ## Examples
+
+      iex> create_withdrawal(%{field: value})
+      {:ok, %Withdrawal{}}
+
+      iex> create_withdrawal(%{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def create_withdrawal(%{"quantity" => quantity, "user" => user}) do
+    Ecto.Multi.new()
+    |> Ecto.Multi.update(:user, User.balance_decrease_changeset(user, quantity))
+    |> Ecto.Multi.insert(
+      :withdrawal,
+      Withdrawal.changeset(%Withdrawal{}, %{quantity: quantity, user_id: user.id})
+    )
+    |> Repo.transaction()
+    |> case  do
+      {:ok, %{withdrawal: withdrawal}} -> {:ok, withdrawal}
+      {:error, :user, changeset, _} -> {:error, changeset}
+      {:error, :withdrawal, changeset, _} -> {:error, changeset}
+    end
+  end
+
+
+  @doc """
+  Returns an `%Ecto.Changeset{}` for tracking withdrawal changes.
+
+  ## Examples
+
+      iex> change_withdrawal(withdrawal)
+      %Ecto.Changeset{data: %Withdrawal{}}
+
+  """
+  def change_withdrawal(%Withdrawal{} = withdrawal, attrs \\ %{}) do
+    Withdrawal.changeset(withdrawal, attrs)
+  end
+
+  @doc """
+  Gets the list of an user's withdrawals.
+
+  ## Example
+
+    iex> get_user_withdrawals(user_id)
+    {:ok, list(%Withdrawal{})}
+
+    iex> get_user_withdrawals(user_id)
+    {:ok, []}
+  """
+  def get_user_withdrawals(user_id) do
+    query = from d in Withdrawal, where: d.user_id == ^user_id, order_by: [desc: :inserted_at]
     Repo.all(query)
   end
 end

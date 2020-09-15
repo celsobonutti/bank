@@ -113,7 +113,7 @@ defmodule Bank.Accounts.User do
   end
 
   @doc """
-  A user changeset for changing balance
+  An user changeset for increasing balance
   """
   def balance_increase_changeset(user, quantity) do
     user
@@ -122,7 +122,26 @@ defmodule Bank.Accounts.User do
     })
     |> validate_number(:balance,
       greater_than: user.balance,
-      message: "deve ser maior que o saldo original"
+      message: "valor incrementado deve ser positivo"
+    )
+    |> validate_current_user_id()
+  end
+
+  @doc """
+  An user changeset for decreasing balance
+  """
+  def balance_decrease_changeset(user, quantity) do
+    user
+    |> change(%{
+      balance: Decimal.sub(user.balance, Decimal.new(quantity))
+    })
+    |> validate_number(:balance,
+      less_than: user.balance,
+      message: "valor decrementado deve ser positivo"
+    )
+    |> validate_number(:balance,
+      greater_than_or_equal_to: 0,
+      message: "valor decrementado não pode ser maior que o saldo do usuário"
     )
     |> validate_current_user_id()
   end
@@ -168,7 +187,7 @@ defmodule Bank.Accounts.User do
   defp validate_document_format(changeset) do
     if changeset.valid? do
       document_is_valid =
-        with document = get_field(changeset, :document),
+        with document <- get_field(changeset, :document),
              {starting_digits, [first_verification, second_verification]} <-
                get_document_digits(document),
              digits_are_valid <-
