@@ -10,7 +10,7 @@ const createWithdrawal = async (quantity: number) => {
 };
 
 type Params = {
-  onError: () => void;
+  onError: (arg: any) => void;
   onSuccess: () => void;
 };
 
@@ -21,8 +21,8 @@ export const useCreateWithdrawal = ({ onError, onSuccess }: Params) => {
       queryCache.invalidateQueries('withdrawals');
       onSuccess();
     },
-    onError: () => {
-      onError();
+    onError: (error) => {
+      onError(error);
     }
   });
 };

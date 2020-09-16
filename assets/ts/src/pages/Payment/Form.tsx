@@ -18,7 +18,7 @@ type BoletoFields = {
 };
 
 export const Form = () => {
-  const { handleSubmit, errors, control, reset } = useForm({
+  const { handleSubmit, errors, control, reset, setError } = useForm({
     defaultValues: {
       boleto_code: null
     }
@@ -45,10 +45,15 @@ export const Form = () => {
         value: ''
       });
     },
-    onError: () => {
+    onError: (errorList) => {
+      for (const key in errorList) {
+        errorList[key].forEach((errorMessage: string) =>
+          setError(key, { message: errorMessage })
+        );
+      }
       showSnackbar({
         type: 'error',
-        message: (error as any).toString()
+        message: 'Opa, parece que houve um erro com seu pagamento :('
       });
     }
   });
@@ -130,7 +135,11 @@ export const Form = () => {
             }
           }}
         />
-        <ErrorMessage name="boleto_code" errors={errors} />
+        <ErrorMessage
+          name="boleto_code"
+          as={<span className="form__error" />}
+          errors={errors}
+        />
         <label htmlFor="value" className="form__label">
           Valor:
         </label>

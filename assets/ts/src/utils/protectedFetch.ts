@@ -12,7 +12,8 @@ export const protectedFetch = async <T>(
     window.location.replace('/users/log_in');
   } else {
     if (response.status >= 400) {
-      throw response;
+      const { errors } = await response.json();
+      throw errors;
     }
     const { data } = await response.json();
     return data;

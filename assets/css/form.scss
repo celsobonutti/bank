@@ -5,7 +5,10 @@
 
   &__error {
     color: var(--error);
-    font-size: 1.2rem;
+
+    &::first-letter {
+      text-transform: capitalize;
+    }
   }
 
   &__label {

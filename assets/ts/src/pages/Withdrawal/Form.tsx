@@ -82,7 +82,11 @@ export const Form = () => {
             }
           }}
         />
-        <ErrorMessage name="quantity" errors={errors} />
+        <ErrorMessage
+          name="quantity"
+          as={<span className="form__error" />}
+          errors={errors}
+        />
 
         <Button
           type="submit"

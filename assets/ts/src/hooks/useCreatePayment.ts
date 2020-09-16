@@ -10,7 +10,7 @@ const createPayment = async (boleto_code: string) => {
 };
 
 type Params = {
-  onError: () => void;
+  onError: (arg: any) => void;
   onSuccess: () => void;
 };
 
@@ -21,8 +21,8 @@ export const useCreatePayment = ({ onError, onSuccess }: Params) => {
       queryCache.invalidateQueries('payments');
       onSuccess();
     },
-    onError: () => {
-      onError();
+    onError: (error) => {
+      onError(error);
     }
   });
 };

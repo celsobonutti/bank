@@ -10,7 +10,7 @@ const createDeposit = async (quantity: number) => {
 };
 
 type Params = {
-  onError: () => void;
+  onError: (arg: any) => void;
   onSuccess: () => void;
 };
 
@@ -21,8 +21,8 @@ export const useCreateDeposit = ({ onError, onSuccess }: Params) => {
       queryCache.invalidateQueries('deposits');
       onSuccess();
     },
-    onError: () => {
-      onError();
+    onError: (error) => {
+      onError(error);
     }
   });
 };

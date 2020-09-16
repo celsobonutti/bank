@@ -12,7 +12,7 @@ type FormData = {
 };
 
 export const Form = () => {
-  const { handleSubmit, errors, control, reset } = useForm({
+  const { handleSubmit, errors, control, reset, setError } = useForm({
     defaultValues: {
       quantity: null
     }
@@ -28,10 +28,15 @@ export const Form = () => {
       });
       reset();
     },
-    onError: () => {
+    onError: (errorList) => {
+      for (const key in errorList) {
+        errorList[key].forEach((errorMessage: string) =>
+          setError(key, { message: errorMessage })
+        );
+      }
       showSnackbar({
         type: 'error',
-        message: (error as any).toString()
+        message: 'Opa, parece que houve um erro com seu depósito :('
       });
     }
   });
@@ -77,7 +82,11 @@ export const Form = () => {
             }
           }}
         />
-        <ErrorMessage name="quantity" errors={errors} />
+        <ErrorMessage
+          name="quantity"
+          as={<span className="form__error" />}
+          errors={errors}
+        />
 
         <Button
           type="submit"
