@@ -1,7 +1,8 @@
-.app {
+#app {
   display: grid;
   grid-template-columns: 1fr;
-  align-content: center;
+  min-height: 100vh;
+  place-content: center;
 }
 
 .view {
@@ -29,11 +30,15 @@
   .main {
     grid-area: main;
     padding: 1em;
+    display: flex;
+    flex-direction: column;
   }
 
   .side {
     grid-area: side;
     padding: 1em;
+    display: flex;
+    flex-direction: column;
 
     @include media('>=phone', '<tablet') {
       border-top: 1px solid var(--secondary);

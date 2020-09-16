@@ -1,4 +1,5 @@
 import React from 'react';
+import { LoadingSpinner } from '../../components/elements/LoadingSpinner';
 import { TransactionCard } from '../../components/elements/TransactionCard';
 import { useWithdrawals } from '../../hooks/useWithdrawals';
 import { Withdrawal } from '../../types/transactions';
@@ -10,7 +11,7 @@ export const Main = () => {
     <>
       <h1>Histórico de saques</h1>
       {isLoading ? (
-        <p>Carregando...</p>
+        <LoadingSpinner />
       ) : (
         (data as Withdrawal[]).map((withdrawal) => (
           <TransactionCard

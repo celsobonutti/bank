@@ -1,4 +1,5 @@
 import React from 'react';
+import { LoadingSpinner } from '../../components/elements/LoadingSpinner';
 import { TransactionCard } from '../../components/elements/TransactionCard';
 
 import { useTransactions } from '../../hooks/useTransactions';
@@ -7,7 +8,7 @@ export const Main = () => {
   const { isLoading, data } = useTransactions();
 
   if (isLoading) {
-    return <p>Loading...</p>;
+    return <LoadingSpinner />;
   }
 
   console.log(data);

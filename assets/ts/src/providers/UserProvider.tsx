@@ -1,4 +1,5 @@
 import React from 'react';
+import { LoadingSpinner } from '../components/elements/LoadingSpinner';
 import { useProfileQuery } from '../hooks/useProfile';
 import { User } from '../types/user';
 
@@ -14,11 +15,16 @@ export const UserProvider = ({ children }: ProviderProps) => {
   const { isLoading, isError, data } = useProfileQuery();
 
   if (isLoading) {
-    return <span>Loading...</span>;
+    return <LoadingSpinner />;
   }
 
   if (isError) {
-    return <span>Error</span>;
+    return (
+      <p>
+        Oops, parece que nós encontramos um erro grave. Entre em contato com
+        nossa equipe para que possamos avaliar.
+      </p>
+    );
   }
 
   return (
