@@ -11,7 +11,8 @@ defmodule BankWeb.WithdrawalView do
   end
 
   def render("withdrawal.json", %{withdrawal: withdrawal}) do
-    %{id: withdrawal.id,
+    %{
+      id: withdrawal.id,
       user_id: withdrawal.user_id,
       quantity: withdrawal.quantity,
       date: NaiveDateTime.to_string(withdrawal.inserted_at)

@@ -122,7 +122,7 @@ defmodule Bank.TransactionsTest do
       assert ^new_balance = Decimal.sub(state[:user].balance, withdrawal.quantity)
     end
 
-    test "createe_withdrawal/1 with a value bigger than the user balance returns error changeset",
+    test "create_withdrawal/1 with a value bigger than the user balance returns error changeset",
          state do
       attrs =
         %{"user" => state[:user]}
@@ -203,21 +203,31 @@ defmodule Bank.TransactionsTest do
       assert {:ok, %Payment{} = payment} = Transactions.create_payment(attrs)
       assert payment.boleto_code == @valid_boleto
       assert Decimal.equal?(payment.quantity, "200.0")
+
+      user = Bank.Accounts.get_user!(state[:user].id)
+
+      assert Decimal.eq?(user.balance, Decimal.sub(state[:user].balance, "200.0"))
+    end
+
+    test "create_payment/1 with a value bigger than the user's balance returns error changeset" do
     end
 
     test "create_payment/1 with expired boleto returns error changeset", state do
+      user = state[:user] |> Bank.Accounts.User.balance_decrease_changeset("1000") |> Bank.Repo.update!()
+
       attrs = %{
         "boleto_code" => @valid_expired_boleto,
-        "user" => state[:user]
+        "user" => user
       }
 
       assert {:error, changeset = %Ecto.Changeset{}} = Transactions.create_payment(attrs)
+
       assert [
-        boleto_code: {
-          "boleto vencido",
-          []
-        }
-      ] = changeset.errors
+               boleto_code: {
+                 "boleto vencido",
+                 []
+               }
+             ] = changeset.errors
     end
 
     test "create_payment/1 with invalid data returns error changeset", state do
@@ -226,7 +236,14 @@ defmodule Bank.TransactionsTest do
         "user" => state[:user]
       }
 
-      assert {:error, "erro na validação de módulo 11"} = Transactions.create_payment(attrs)
+      assert {:error, changeset = %Ecto.Changeset{}} = Transactions.create_payment(attrs)
+
+      assert [
+               boleto_code: {
+                 "erro na validação de módulo 11",
+                 []
+               }
+             ] = changeset.errors
     end
 
     test "change_payment/1 returns a payment changeset", state do

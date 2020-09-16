@@ -11,8 +11,11 @@ defmodule BankWeb.PaymentView do
   end
 
   def render("payment.json", %{payment: payment}) do
-    %{id: payment.id,
+    %{
+      id: payment.id,
       quantity: payment.quantity,
-      boleto_code: payment.boleto_code}
+      boleto_code: payment.boleto_code,
+      date: NaiveDateTime.to_string(payment.inserted_at)
+    }
   end
 end

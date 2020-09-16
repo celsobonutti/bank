@@ -151,7 +151,7 @@ defmodule Bank.Accounts.User do
   def boleto_payment_changeset(user, boleto_code) do
     user
     |> change(%{boleto_code: boleto_code})
-    |> validate_boleto(boleto_code)
+    |> validate_boleto(user)
     |> validate_number(:balance,
       greater_than_or_equal_to: 0,
       message: "valor do boleto excede o saldo do usuário"
@@ -264,7 +264,7 @@ defmodule Bank.Accounts.User do
       case Boleto.parse(get_field(changeset, :boleto_code)) do
         {:ok, boleto} ->
           if Boleto.still_payable?(boleto) do
-            put_change(changeset, :balance, user.balance)
+            put_change(changeset, :balance, Decimal.sub(user.balance, boleto.value))
           else
             add_error(changeset, :boleto_code, "boleto vencido")
           end

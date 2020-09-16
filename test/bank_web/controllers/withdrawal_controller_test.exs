@@ -41,7 +41,7 @@ defmodule BankWeb.WithdrawalControllerTest do
     end
 
     test "renders errors when quantity is bigger than user balance", %{conn: conn, user: user} do
-      conn = conn |> log_in_user(user) |> post(Routes.withdrawal_path(conn, :create), quantity: "250.0")
+      conn = conn |> log_in_user(user) |> post(Routes.withdrawal_path(conn, :create), quantity: "1010.0")
       assert json_response(conn, 422)["errors"] != %{}
     end
 
