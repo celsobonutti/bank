@@ -5,6 +5,8 @@
   height: 100%;
   max-width: 500px;
   margin: 2rem auto 0;
+  box-sizing: border-box;
+  padding: 0 1rem;
 
   &__header {
     text-align: center;
