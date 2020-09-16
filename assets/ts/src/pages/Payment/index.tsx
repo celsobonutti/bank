@@ -1,8 +1,8 @@
 import React from 'react';
 import { DefaultView } from '../../components/containers/DefaultView';
-import { Main } from './Main';
-import { Side } from './Side';
+import { List } from './List';
+import { Form } from './Form';
 
 export const Payment = () => {
-  return <DefaultView main={<Main />} side={<Side />} />;
+  return <DefaultView main={<List />} side={<Form />} />;
 };

@@ -1,9 +1,9 @@
 import React from 'react';
 import { DefaultView } from '../../components/containers/DefaultView';
 
-import { Main } from './Main';
-import { Side } from './Side';
+import { TransactionHistory } from './TransactionHistory';
+import { Summary } from './Summary';
 
 export const Profile = () => {
-  return <DefaultView main={<Main />} side={<Side />} />;
+  return <DefaultView main={<TransactionHistory />} side={<Summary />} />;
 };

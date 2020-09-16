@@ -2,12 +2,7 @@ import React from 'react';
 import { Group } from 'reakit';
 import { Route } from '../../types/route';
 
-import { User } from '../../types/user';
 import { NavbarItem } from './NavbarItem';
-
-type MenuProps = {
-  user: User;
-};
 
 type Item = {
   path: Route;
@@ -33,7 +28,7 @@ const routes: Item[] = [
   }
 ];
 
-export const Navbar = ({ user }: MenuProps) => {
+export const Navbar = () => {
   return (
     <nav className="menu">
       <Group className="menu__group">

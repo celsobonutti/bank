@@ -4,7 +4,7 @@ import { TransactionCard } from '../../components/elements/TransactionCard';
 import { useWithdrawals } from '../../hooks/useWithdrawals';
 import { Withdrawal } from '../../types/transactions';
 
-export const Main = () => {
+export const List = () => {
   const { isLoading, data } = useWithdrawals();
 
   return (

@@ -1,7 +1,7 @@
 import React from 'react';
 import { useProfile } from '../../providers/UserProvider';
 
-export const Side = () => {
+export const Summary = () => {
   const user = useProfile();
 
   return (

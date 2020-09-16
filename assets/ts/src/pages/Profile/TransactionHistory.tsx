@@ -4,7 +4,7 @@ import { TransactionCard } from '../../components/elements/TransactionCard';
 
 import { useTransactions } from '../../hooks/useTransactions';
 
-export const Main = () => {
+export const TransactionHistory = () => {
   const { isLoading, data } = useTransactions();
 
   if (isLoading) {

@@ -4,7 +4,7 @@ import { TransactionCard } from '../../components/elements/TransactionCard';
 import { usePayments } from '../../hooks/usePayments';
 import { Payment } from '../../types/transactions';
 
-export const Main = () => {
+export const List = () => {
   const { isLoading, data } = usePayments();
 
   return (

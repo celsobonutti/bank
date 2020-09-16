@@ -17,7 +17,7 @@ type BoletoFields = {
   value: string;
 };
 
-export const Side = () => {
+export const Form = () => {
   const { handleSubmit, errors, control, reset } = useForm({
     defaultValues: {
       boleto_code: null
