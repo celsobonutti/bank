@@ -42,7 +42,6 @@ export const Side = () => {
       reset();
     },
     onError: () => {
-      console.log(error);
       showSnackbar({
         type: 'error',
         message: (error as any).toString()
@@ -60,7 +59,7 @@ export const Side = () => {
 
   return (
     <>
-      <h3>Fazer um pagamento</h3>
+      <h3 data-testid="payment-header">Fazer um pagamento</h3>
       <form className="form payment__form" onSubmit={handleSubmit(onSubmit)}>
         <label htmlFor="boleto_code" className="form__label">
           Digite o código (Linha Digitável) do seu boleto
