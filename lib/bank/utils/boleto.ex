@@ -21,6 +21,10 @@ defmodule Bank.Boleto do
     end
   end
 
+  def still_payable?(boleto) do
+    Date.compare(Date.utc_today(), boleto.due_date) != :gt
+  end
+
   def module_10_validation([first, second, third, _, _]) do
     Enum.all?([first, second, third], fn code -> validate_module_10(code) end)
     |> case do

@@ -3,6 +3,7 @@ defmodule Bank.Accounts.User do
   import Ecto.Changeset
 
   alias Bank.Accounts
+  alias Bank.Boleto
 
   @derive {Inspect, except: [:password]}
   schema "users" do
@@ -10,6 +11,7 @@ defmodule Bank.Accounts.User do
     field :email, :string
     field :document, :string
     field :balance, :decimal, default: Decimal.new("0.00")
+    field :boleto_code, :string, virtual: true
     field :password, :string, virtual: true
     field :hashed_password, :string
     field :confirmed_at, :naive_datetime
@@ -146,6 +148,16 @@ defmodule Bank.Accounts.User do
     |> validate_current_user_id()
   end
 
+  def boleto_payment_changeset(user, boleto_code) do
+    user
+    |> change(%{boleto_code: boleto_code})
+    |> validate_boleto(boleto_code)
+    |> validate_number(:balance,
+      greater_than_or_equal_to: 0,
+      message: "valor do boleto excede o saldo do usuário"
+    )
+  end
+
   @doc """
   Verifies the password.
 
@@ -245,5 +257,23 @@ defmodule Bank.Accounts.User do
       |> Enum.uniq()
 
     length(character_list) == 1
+  end
+
+  defp validate_boleto(changeset, user) do
+    if changeset.valid? do
+      case Boleto.parse(get_field(changeset, :boleto_code)) do
+        {:ok, boleto} ->
+          if Boleto.still_payable?(boleto) do
+            put_change(changeset, :balance, user.balance)
+          else
+            add_error(changeset, :boleto_code, "boleto vencido")
+          end
+
+        {:error, reason} ->
+          add_error(changeset, :boleto_code, reason)
+      end
+    else
+      changeset
+    end
   end
 end

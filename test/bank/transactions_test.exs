@@ -122,10 +122,11 @@ defmodule Bank.TransactionsTest do
       assert ^new_balance = Decimal.sub(state[:user].balance, withdrawal.quantity)
     end
 
-    test "createe_withdrawal/1 with a value bigger than the user balance returns error changeset", state do
+    test "createe_withdrawal/1 with a value bigger than the user balance returns error changeset",
+         state do
       attrs =
         %{"user" => state[:user]}
-        |> Enum.into(%{"quantity" => "250.0"})
+        |> Enum.into(%{"quantity" => "1010.0"})
 
       assert {:error, changeset} = Transactions.create_withdrawal(attrs)
 
@@ -163,6 +164,74 @@ defmodule Bank.TransactionsTest do
       assert d1.inserted_at < d2.inserted_at
       assert d1 == first_withdrawal
       assert d2 == second_withdrawal
+    end
+  end
+
+  describe "payments" do
+    alias Bank.Transactions.Payment
+
+    @moduledoc """
+    Boleto payment tests.
+    "Working" case is disabled since the boleto can expire. Please update it before running tests.
+    """
+    @valid_boleto "23793.38128 60039.354695 59000.063301 7 83810000020000"
+    @valid_expired_boleto "23793.38128 60030.557163 65000.063308 4 83080000058584"
+    @invalid_boleto "23793.38128 60030.557163 65000.063308 3 83080000058584"
+
+    def payment_fixture(attrs \\ %{}) do
+      {:ok, payment} =
+        attrs
+        |> Enum.into(%{
+          "boleto_code" => @valid_boleto
+        })
+        |> Transactions.create_payment()
+
+      payment
+    end
+
+    test "get_payment!/1 returns the payment with given id", state do
+      payment = payment_fixture(%{"user" => state[:user]})
+      assert Transactions.get_payment!(payment.id) == payment
+    end
+
+    test "create_payment/1 with valid data creates a payment", state do
+      attrs = %{
+        "boleto_code" => @valid_boleto,
+        "user" => state[:user]
+      }
+
+      assert {:ok, %Payment{} = payment} = Transactions.create_payment(attrs)
+      assert payment.boleto_code == @valid_boleto
+      assert Decimal.equal?(payment.quantity, "200.0")
+    end
+
+    test "create_payment/1 with expired boleto returns error changeset", state do
+      attrs = %{
+        "boleto_code" => @valid_expired_boleto,
+        "user" => state[:user]
+      }
+
+      assert {:error, changeset = %Ecto.Changeset{}} = Transactions.create_payment(attrs)
+      assert [
+        boleto_code: {
+          "boleto vencido",
+          []
+        }
+      ] = changeset.errors
+    end
+
+    test "create_payment/1 with invalid data returns error changeset", state do
+      attrs = %{
+        "boleto_code" => @invalid_boleto,
+        "user" => state[:user]
+      }
+
+      assert {:error, "erro na validação de módulo 11"} = Transactions.create_payment(attrs)
+    end
+
+    test "change_payment/1 returns a payment changeset", state do
+      payment = payment_fixture(%{"user" => state[:user]})
+      assert %Ecto.Changeset{} = Transactions.change_payment(payment)
     end
   end
 end

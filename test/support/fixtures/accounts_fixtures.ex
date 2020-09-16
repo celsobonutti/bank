@@ -27,7 +27,7 @@ defmodule Bank.AccountsFixtures do
     {:ok, user} =
       attrs
       |> user_fixture()
-      |> Bank.Accounts.increase_user_balance("200.0")
+      |> Bank.Accounts.increase_user_balance("1000.0")
 
     user
   end

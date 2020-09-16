@@ -8,6 +8,7 @@ defmodule Bank.Transactions do
 
   alias Bank.Transactions.Deposit
   alias Bank.Accounts.User
+  alias Bank.Boleto
 
   @doc """
   Returns the list of deposits.
@@ -61,7 +62,7 @@ defmodule Bank.Transactions do
     |> case do
       {:ok, %{deposit: deposit}} -> {:ok, deposit}
       {:error, :user, changeset, _} -> {:error, changeset}
-      {:error, :deposit, changeset , _} -> {:error, changeset}
+      {:error, :deposit, changeset, _} -> {:error, changeset}
     end
   end
 
@@ -145,13 +146,12 @@ defmodule Bank.Transactions do
       Withdrawal.changeset(%Withdrawal{}, %{quantity: quantity, user_id: user.id})
     )
     |> Repo.transaction()
-    |> case  do
+    |> case do
       {:ok, %{withdrawal: withdrawal}} -> {:ok, withdrawal}
       {:error, :user, changeset, _} -> {:error, changeset}
       {:error, :withdrawal, changeset, _} -> {:error, changeset}
     end
   end
-
 
   @doc """
   Returns an `%Ecto.Changeset{}` for tracking withdrawal changes.
@@ -180,5 +180,76 @@ defmodule Bank.Transactions do
   def get_user_withdrawals(user_id) do
     query = from d in Withdrawal, where: d.user_id == ^user_id, order_by: [desc: :inserted_at]
     Repo.all(query)
+  end
+
+  alias Bank.Transactions.Payment
+
+  @doc """
+  Returns the list of payments.
+
+  ## Examples
+
+      iex> list_payments()
+      [%Payment{}, ...]
+
+  """
+  def list_payments do
+    Repo.all(Payment)
+  end
+
+  @doc """
+  Gets a single payment.
+
+  Raises `Ecto.NoResultsError` if the Payment does not exist.
+
+  ## Examples
+
+      iex> get_payment!(123)
+      %Payment{}
+
+      iex> get_payment!(456)
+      ** (Ecto.NoResultsError)
+
+  """
+  def get_payment!(id), do: Repo.get!(Payment, id)
+
+  @doc """
+  Creates a payment.
+
+  ## Examples
+
+      iex> create_payment(%{field: value})
+      {:ok, %Payment{}}
+
+      iex> create_payment(%{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def create_payment(%{"boleto_code" => boleto_code, "user" => user}) do
+    Ecto.Multi.new()
+    |> Ecto.Multi.update(:user, User.boleto_payment_changeset(user, boleto_code))
+    |> Ecto.Multi.insert(
+      :payment,
+      Payment.changeset(%Payment{}, %{boleto_code: boleto_code, user_id: user.id})
+    )
+    |> Repo.transaction()
+    |> case do
+      {:ok, %{payment: payment}} -> {:ok, payment}
+      {:error, :user, changeset, _} -> {:error, changeset}
+      {:error, :payment, changeset, _} -> {:error, changeset}
+    end
+  end
+
+  @doc """
+  Returns an `%Ecto.Changeset{}` for tracking payment changes.
+
+  ## Examples
+
+      iex> change_payment(payment)
+      %Ecto.Changeset{data: %Payment{}}
+
+  """
+  def change_payment(%Payment{} = payment, attrs \\ %{}) do
+    Payment.changeset(payment, attrs)
   end
 end

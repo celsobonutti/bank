@@ -3,7 +3,7 @@ defmodule Bank.Repo.Migrations.CreateWithdrawals do
 
   def change do
     create table(:withdrawals) do
-      add :quantity, :decimal
+      add :quantity, :decimal, null: false
       add :user_id, references(:users, on_delete: :nothing), null: false
 
       timestamps()

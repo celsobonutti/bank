@@ -55,6 +55,29 @@ defmodule Bank.BoletoTest do
     end
   end
 
+  describe "still_payable?/1" do
+    test "returns true if after today" do
+      assert Boleto.still_payable?(%Boleto{
+        value: "585.84",
+        due_date: ~D[3000-07-06]
+      })
+    end
+
+    test "returns true if is today" do
+      assert Boleto.still_payable?(%Boleto{
+        value: "585.84",
+        due_date: Date.utc_today()
+      })
+    end
+
+    test "returns false if before today" do
+      refute Boleto.still_payable?(%Boleto{
+        value: "585.84",
+        due_date: ~D[1999-07-06]
+      })
+    end
+  end
+
   describe "module_10_validation/1" do
     test "returns {:ok, true} for valid boletos" do
       assert {:ok, true} = Boleto.module_10_validation(@valid_boleto)

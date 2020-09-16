@@ -78,6 +78,9 @@ defmodule BankWeb.Router do
     post "/withdrawals", WithdrawalController, :create
     get "/withdrawals/:id", WithdrawalController, :show
     get "/withdrawals", WithdrawalController, :index
+    post "/payments", PaymentController, :create
+    get "/payments/:id", PaymentController, :show
+    get "/payments", PaymentController, :index
   end
 
   scope "/v1/api", BankWeb do
