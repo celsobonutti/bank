@@ -20,7 +20,7 @@ export const Form = () => {
 
   const { showSnackbar } = useSnackbar();
 
-  const [mutate, { isLoading, error }] = useCreateDeposit({
+  const [mutate, { isLoading }] = useCreateDeposit({
     onSuccess: () => {
       showSnackbar({
         type: 'success',

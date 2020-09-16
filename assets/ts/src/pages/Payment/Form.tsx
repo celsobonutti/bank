@@ -33,7 +33,7 @@ export const Form = () => {
 
   const user = useProfile();
 
-  const [mutate, { isLoading, error }] = useCreatePayment({
+  const [mutate, { isLoading }] = useCreatePayment({
     onSuccess: () => {
       showSnackbar({
         type: 'success',
