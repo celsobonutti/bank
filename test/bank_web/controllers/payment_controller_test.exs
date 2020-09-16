@@ -12,7 +12,7 @@ defmodule BankWeb.PaymentControllerTest do
   import Bank.AccountsFixtures
 
   # Replace with a valid one before running tests
-  @valid_boleto "23793.38128 60039.354695 59000.063301 7 83810000020000"
+  # @valid_boleto "23793.38128 60039.354695 59000.063301 7 83810000020000"
   @valid_expired_boleto "23793.38128 60030.557163 65000.063308 4 83080000058584"
   @invalid_boleto "23793.38128 60030.557163 65000.063308 3 83080000058584"
 

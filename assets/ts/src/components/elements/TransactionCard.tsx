@@ -51,7 +51,7 @@ export const TransactionCard = ({ type, data }: TransactionCardProps) => {
               {Intl.NumberFormat('pt-BR', {
                 style: 'currency',
                 currency: 'BRL'
-              }).format(data.quantity)}
+              }).format(withdrawal.quantity)}
             </h4>
             <h5>
               Realizado em{' '}
@@ -62,17 +62,24 @@ export const TransactionCard = ({ type, data }: TransactionCardProps) => {
           </>
         );
       case 'payment':
+        const payment = data as Payment;
         return (
           <>
             <h3>Pagamento</h3>
+            <h4>De código: {payment.boleto_code}</h4>
             <h4>
               No valor de:{' '}
               {Intl.NumberFormat('pt-BR', {
                 style: 'currency',
                 currency: 'BRL'
-              }).format(data.quantity)}
+              }).format(payment.quantity)}
             </h4>
-            <h5>Programado às {(data as Payment).scheduled_at.toString()}</h5>
+            <h5>
+              Realizado em{' '}
+              <b>
+                {Intl.DateTimeFormat('pt-BR').format(new Date(payment.date))}
+              </b>
+            </h5>
           </>
         );
     }

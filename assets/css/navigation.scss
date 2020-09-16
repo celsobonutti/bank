@@ -15,8 +15,13 @@
     border-radius: 0;
     background-color: transparent;
     box-sizing: border-box;
-    width: 100%;
-    flex-grow: 1;
+    flex: 1;
+    max-width: 25%;
+
+    @include media('>=phone', '<tablet') {
+      font-size: 0.8em;
+      padding: 0.8rem 0.4rem;  
+    }
 
     &:focus {
       outline: 2px solid var(--primary);

@@ -7,8 +7,9 @@ defmodule Bank.Transactions do
   alias Bank.Repo
 
   alias Bank.Transactions.Deposit
+  alias Bank.Transactions.Withdrawal
+  alias Bank.Transactions.Payment
   alias Bank.Accounts.User
-  alias Bank.Boleto
 
   @doc """
   Returns the list of deposits.
@@ -94,8 +95,6 @@ defmodule Bank.Transactions do
     query = from d in Deposit, where: d.user_id == ^user_id, order_by: [desc: :inserted_at]
     Repo.all(query)
   end
-
-  alias Bank.Transactions.Withdrawal
 
   @doc """
   Returns the list of withdrawals.
@@ -251,5 +250,21 @@ defmodule Bank.Transactions do
   """
   def change_payment(%Payment{} = payment, attrs \\ %{}) do
     Payment.changeset(payment, attrs)
+  end
+
+  @doc """
+  Gets the list of an user's payments.
+
+  ## Example
+
+    iex> get_user_payments(user_id)
+    {:ok, list(%Payment{})}
+
+    iex> get_user_payments(user_id)
+    {:ok, []}
+  """
+  def get_user_payments(user_id) do
+    query = from p in Payment, where: p.user_id == ^user_id, order_by: [desc: :inserted_at]
+    Repo.all(query)
   end
 end

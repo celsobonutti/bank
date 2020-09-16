@@ -17,6 +17,11 @@ input {
   outline-color: var(--primary);
   padding: 1rem 1.4rem;
   background-color: var(--background);
+
+  &:disabled {
+    background-color: #222;
+    color: #ccc;
+  }
 }
 
 button {

@@ -26,6 +26,10 @@ const routes: Item[] = [
   {
     path: '/withdrawal',
     title: 'Saques'
+  },
+  {
+    path: '/payment',
+    title: 'Pagamentos'
   }
 ];
 

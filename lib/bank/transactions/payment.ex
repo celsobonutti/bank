@@ -17,6 +17,7 @@ defmodule Bank.Transactions.Payment do
     payment
     |> cast(attrs, [:boleto_code, :user_id])
     |> validate_required([:boleto_code, :user_id])
+    |> unsafe_validate_unique(:boleto_code, Bank.Repo, message: "este boleto já foi pago")
     |> validate_boleto()
   end
 

@@ -11,7 +11,6 @@
 
     <%= label f, :password, "Senha", [class: "form__label"] %>
     <%= password_input f, :password, required: true %>
-    <%= link "Esqueceu sua senha?", to: Routes.user_reset_password_path(@conn, :new) %>
 
     <div class="remember">
       <%= checkbox f, :remember_me, [class: "remember__checkbox"] %>

@@ -11,5 +11,6 @@ defmodule Bank.Repo.Migrations.CreatePayments do
     end
 
     create index(:payments, [:user_id])
+    create unique_index(:payments, :boleto_code)
   end
 end

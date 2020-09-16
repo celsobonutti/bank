@@ -1,3 +1,9 @@
+.app {
+  display: grid;
+  grid-template-columns: 1fr;
+  align-content: center;
+}
+
 .view {
   flex: 1;
   display: grid;
@@ -5,6 +11,8 @@
   grid-template-areas:
     "side"
     "main";
+
+  animation: fadeIn 0.5s;
 
   @include media('screen', '>=tablet') {
     grid-template-columns: repeat(2, 1fr);

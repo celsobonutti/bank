@@ -3,13 +3,9 @@ defmodule BankWeb.PaymentController do
 
   alias Bank.Transactions
   alias Bank.Transactions.Payment
+  alias Bank.Accounts.User
 
   action_fallback BankWeb.FallbackController
-
-  def index(conn, _params) do
-    payments = Transactions.list_payments()
-    render(conn, "index.json", payments: payments)
-  end
 
   def create(conn, _params) do
     params =
@@ -30,6 +26,22 @@ defmodule BankWeb.PaymentController do
 
   def show(conn, %{"id" => id}) do
     payment = Transactions.get_payment!(id)
-    render(conn, "show.json", payment: payment)
+
+    current_user = conn.assigns[:current_user]
+
+    if payment.user_id == current_user.id do
+      render(conn, "show.json", payment: payment)
+    else
+      {:error, :forbidden}
+    end
+  end
+
+  def index(conn, _params) do
+    if conn.assigns[:current_user] do
+      %User{id: user_id} = conn.assigns[:current_user]
+       render(conn, "index.json", payments: Transactions.get_user_payments(user_id))
+    else
+      {:error, :unauthorized}
+    end
   end
 end
