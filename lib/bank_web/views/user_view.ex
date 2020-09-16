@@ -1,6 +1,5 @@
 defmodule BankWeb.UserView do
   use BankWeb, :view
-  alias BankWeb.UserView
 
   def render("show.json", %{user: user}) do
     balance =
