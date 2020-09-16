@@ -29,6 +29,10 @@ is my favorite front-end framework (or library, however you want to call it). Ty
 
 I used `phoenix-gen-auth` lib, which is created by the creators of Phoenix (and Elixir) and is based on production feedback from them. I also preferred to stick to a server-side rendering for authentication, which I think is more safe. The app itself (once you login), however, is an SPA.
 
+### Styling
+
+I decided to go with SASS + BEM, which I'm comfortable with and think is a good way to structure stylesheets. Although I think solutions like `styled-components` and `emotion` are great, I think generating styles at runtime is unnecessary when you can build them beforehand. I've thought about using TailwindCSS, but I think BEM is enough for a project of this size.
+
 ## Tests
 
 Back-end tests can be run with `mix test` in the root folder.
