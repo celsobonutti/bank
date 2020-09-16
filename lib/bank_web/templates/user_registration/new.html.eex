@@ -8,19 +8,27 @@
 
   <%= label f, :name, "Nome", [class: "form__label"] %>
   <%= text_input f, :name, required: true %>
-  <%= error_tag f, :name %>
+  <ul>
+    <%= error_tag f, :name %>
+  </ul>
 
   <%= label f, :email, "E-mail", [class: "form__label"] %>
   <%= email_input f, :email, required: true %>
-  <%= error_tag f, :email %>
+  <ul>
+    <%= error_tag f, :email %>
+  </ul>
 
   <%= label f, :document, "CPF", [class: "form__label"] %>
   <%= text_input f, :document, required: true %>
-  <%= error_tag f, :document %>
+  <ul>
+    <%= error_tag f, :document %>
+  </ul>
 
   <%= label f, :password, "Senha", [class: "form__label"] %>
   <%= password_input f, :password, required: true %>
-  <%= error_tag f, :password %>
+  <ul>
+    <%= error_tag f, :password %>
+  </ul>
 
   <div>
     <%= submit "Cadastrar", [class: "form__button"] %>

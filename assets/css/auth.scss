@@ -37,5 +37,8 @@
 
 .error_tag {
   color: var(--error);
-  text-transform: capitalize;
+  
+  &::first-letter {
+    text-transform: capitalize;
+  }
 }

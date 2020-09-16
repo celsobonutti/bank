@@ -9,11 +9,15 @@
 
   <%= label f, :password, "New password" %>
   <%= password_input f, :password, required: true %>
-  <%= error_tag f, :password %>
+  <ul>
+    <%= error_tag f, :password %>
+  </ul>
 
   <%= label f, :password_confirmation, "Confirm new password" %>
   <%= password_input f, :password_confirmation, required: true %>
-  <%= error_tag f, :password_confirmation %>
+  <ul>
+    <%= error_tag f, :password_confirmation %>
+  </ul>
 
   <div>
     <%= submit "Reset password" %>
