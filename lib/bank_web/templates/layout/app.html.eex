@@ -4,7 +4,7 @@
     <meta charset="utf-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>Bank · Phoenix Framework</title>
+    <title>Bank</title>
     <script defer type="text/javascript" src="<%= Routes.static_path(@conn, "/ts/index.js") %>"></script>
     <link rel="stylesheet" href="<%= Routes.static_path(@conn, "/css/app.css") %>"/>
     <link ref="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;1,300;1,400;1,500;1,600;1,700&display=swap"/>
