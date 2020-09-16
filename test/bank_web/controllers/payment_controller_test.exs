@@ -6,9 +6,6 @@ defmodule BankWeb.PaymentControllerTest do
 
   use BankWeb.ConnCase
 
-  alias Bank.Transactions
-  alias Bank.Transactions.Payment
-
   import Bank.AccountsFixtures
 
   # Replace with a valid one before running tests
