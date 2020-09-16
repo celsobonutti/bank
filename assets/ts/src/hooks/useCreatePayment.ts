@@ -2,7 +2,7 @@ import { useMutation, queryCache } from 'react-query';
 import { protectedFetch } from '../utils/protectedFetch';
 
 const createPayment = async (boleto_code: number) => {
-  const payment = await protectedFetch('/v1/api/payments', {
+  const payment = await protectedFetch('/api/v1/payments', {
     body: JSON.stringify({ boleto_code }),
     method: 'POST'
   });

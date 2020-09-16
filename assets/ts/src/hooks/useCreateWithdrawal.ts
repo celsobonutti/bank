@@ -2,7 +2,7 @@ import { useMutation, queryCache } from 'react-query';
 import { protectedFetch } from '../utils/protectedFetch';
 
 const createWithdrawal = async (quantity: number) => {
-  const withdrawal = await protectedFetch('/v1/api/withdrawals', {
+  const withdrawal = await protectedFetch('/api/v1/withdrawals', {
     body: JSON.stringify({ quantity }),
     method: 'POST'
   });

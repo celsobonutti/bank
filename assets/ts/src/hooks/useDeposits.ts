@@ -4,7 +4,7 @@ import { protectedFetch } from '../utils/protectedFetch';
 import { Deposit } from '../types/transactions';
 
 const getDeposits = async () => {
-  const deposits = await protectedFetch<Deposit[]>('/v1/api/deposits');
+  const deposits = await protectedFetch<Deposit[]>('/api/v1/deposits');
   return deposits;
 };
 

@@ -4,7 +4,7 @@ import { protectedFetch } from '../utils/protectedFetch';
 
 const getTransactions = async () => {
   const transactions = await protectedFetch<any[]>(
-    '/v1/api/users/transactions'
+    '/api/v1/users/transactions'
   );
   return transactions;
 };

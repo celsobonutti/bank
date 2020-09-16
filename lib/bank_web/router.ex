@@ -68,7 +68,7 @@ defmodule BankWeb.Router do
     put "/users/reset_password/:token", UserResetPasswordController, :update
   end
 
-  scope "/v1/api", BankWeb do
+  scope "/api/v1", BankWeb do
     pipe_through [:api, :require_api_authentication]
 
     get "/users", UserController, :show
@@ -84,7 +84,7 @@ defmodule BankWeb.Router do
     get "/payments", PaymentController, :index
   end
 
-  scope "/v1/api", BankWeb do
+  scope "/api/v1", BankWeb do
     pipe_through [:api, :require_authenticated_user]
 
     get "/log_out", UserSessionController, :delete

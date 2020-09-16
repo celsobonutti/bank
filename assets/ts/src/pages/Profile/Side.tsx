@@ -6,8 +6,14 @@ export const Side = () => {
 
   return (
     <>
-      <h1 data-testid="profile-header">Olá, {user.name}, tudo bem?</h1>
-      <h2 data-testid="profile-balance">
+      <h3 data-testid="profile-header">Olá, {user.name}, tudo bem?</h3>
+      <p>
+        Deseja sair da sua conta?{' '}
+        <a href="/api/v1/log_out" aria-label="Sair">
+          Clique aqui.
+        </a>
+      </p>
+      <h4 data-testid="profile-balance">
         Seu saldo é de{' '}
         <b>
           {Intl.NumberFormat('pt-BR', {
@@ -15,7 +21,7 @@ export const Side = () => {
             currency: 'BRL'
           }).format(user.balance)}
         </b>
-      </h2>
+      </h4>
     </>
   );
 };

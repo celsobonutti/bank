@@ -15,7 +15,7 @@ export const Main = () => {
 
   return (
     <>
-      <h3>Histórico de transações</h3>
+      <h1>Histórico de transações</h1>
       {data?.map((transaction) => (
         <TransactionCard type={transaction.type} data={transaction} />
       ))}
