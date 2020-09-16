@@ -1,12 +1,12 @@
 import { useMutation, queryCache } from 'react-query';
 import { protectedFetch } from '../utils/protectedFetch';
 
-const createDeposit = async (quantity: number) => {
-  const deposit = await protectedFetch('/v1/api/deposits', {
+const createWithdrawal = async (quantity: number) => {
+  const withdrawal = await protectedFetch('/v1/api/withdrawals', {
     body: JSON.stringify({ quantity }),
     method: 'POST'
   });
-  return deposit;
+  return withdrawal;
 };
 
 type Params = {
@@ -14,11 +14,11 @@ type Params = {
   onSuccess: () => void;
 };
 
-export const useCreateDeposit = ({ onError, onSuccess }: Params) => {
-  return useMutation(createDeposit, {
+export const useCreateWithdrawal = ({ onError, onSuccess }: Params) => {
+  return useMutation(createWithdrawal, {
     onSuccess: () => {
       queryCache.invalidateQueries('user');
-      queryCache.invalidateQueries('deposits');
+      queryCache.invalidateQueries('withdrawals');
       onSuccess();
     },
     onError: () => {
