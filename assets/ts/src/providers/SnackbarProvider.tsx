@@ -37,7 +37,9 @@ export const SnackbarProvider = ({ children }: ProviderProps) => {
     <SnackbarContext.Provider value={{ showSnackbar }}>
       {snackbar && (
         <div className={`snackbar snackbar--${snackbar.type}`}>
-          <p aria-live="polite">{snackbar.message}</p>
+          <p aria-live="polite" data-testid="snackbar-message">
+            {snackbar.message}
+          </p>
         </div>
       )}
       {children}

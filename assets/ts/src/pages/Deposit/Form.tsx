@@ -14,7 +14,7 @@ type FormData = {
 export const Form = () => {
   const { handleSubmit, errors, control, reset, setError } = useForm({
     defaultValues: {
-      quantity: null
+      quantity: ''
     }
   });
 
@@ -69,7 +69,6 @@ export const Form = () => {
               decimalSeparator=","
               thousandSeparator="."
               placeholder="R$ 0,00"
-              data-testid="deposit-input"
             />
           }
           rules={{
@@ -81,10 +80,12 @@ export const Form = () => {
               }
             }
           }}
+          data-testid="deposit-input"
         />
         <ErrorMessage
           name="quantity"
-          as={<span className="form__error" />}
+          data-testid="deposit-error"
+          as={<span role="alert" className="form__error" />}
           errors={errors}
         />
 

@@ -1,13 +1,10 @@
 import React from 'react';
-import { MemoryRouter } from 'react-router-dom';
-import { render, fireEvent, waitFor } from '@testing-library/react';
+import { fireEvent, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
-//import fetchMock from 'jest-fetch-mock';
 
 import { Router as AppRouter } from '../Router';
-import { UserProvider } from '../../../providers/UserProvider';
-import { SnackbarProvider } from '../../../providers/SnackbarProvider';
 import { act } from 'react-dom/test-utils';
+import { renderWithProviders } from '../../../test_utils/renderWithProvider';
 
 const user = {
   name: 'Roberto Baptista',
@@ -17,17 +14,9 @@ const user = {
 };
 
 describe('<Router />', () => {
-  test('app rendering/navigating', async () => {
+  test('renders and navigates correctly', async () => {
     await act(async () => {
-      const { getByText, getByTestId } = render(
-        <UserProvider>
-          <SnackbarProvider>
-            <MemoryRouter>
-              <AppRouter />
-            </MemoryRouter>
-          </SnackbarProvider>
-        </UserProvider>
-      );
+      const { getByText, getByTestId } = renderWithProviders(<AppRouter />);
 
       await waitFor(() => getByText('Perfil'));
 
