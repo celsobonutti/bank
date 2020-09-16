@@ -62,16 +62,18 @@ export const module10Validation = (codeToValidate: string): boolean => {
 
 export const module11Validation = (boleto: BoletoFields): boolean => {
   const barcode = extractBarcodeString(boleto);
-  let multiplier = 2;
 
-  const sum = barcode
+  const [sum, _] = barcode
     .split('')
     .reverse()
-    .reduce((accumulator, currentValue) => {
-      const valueToSum = Number(currentValue) * multiplier;
-      multiplier = multiplier === 9 ? 2 : multiplier + 1;
-      return accumulator + valueToSum;
-    }, 0);
+    .reduce(
+      ([accumulator, multiplier], currentValue) => {
+        const valueToSum = Number(currentValue) * multiplier;
+        const newMultiplier = multiplier === 9 ? 2 : multiplier + 1;
+        return [accumulator + valueToSum, newMultiplier];
+      },
+      [0, 2]
+    );
 
   const rem = sum % 11;
 
@@ -81,5 +83,5 @@ export const module11Validation = (boleto: BoletoFields): boolean => {
       ? 1
       : validationDigit;
 
-  return validationDigit.toString() === boleto[3];
+  return validationDigit === Number(boleto[3]);
 };
