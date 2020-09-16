@@ -40,6 +40,10 @@ export const Side = () => {
         message: 'Seu pagamento foi realizado com sucesso! ;)'
       });
       reset();
+      setBoletoFields({
+        dueDate: '',
+        value: ''
+      });
     },
     onError: () => {
       showSnackbar({
