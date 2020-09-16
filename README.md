@@ -33,6 +33,10 @@ I used `phoenix-gen-auth` lib, which is created by the creators of Phoenix (and 
 
 I decided to go with SASS + BEM, which I'm comfortable with and think is a good way to structure stylesheets. Although I think solutions like `styled-components` and `emotion` are great, I think generating styles at runtime is unnecessary when you can build them beforehand. I've thought about using TailwindCSS, but I think BEM is enough for a project of this size.
 
+## UI Libs
+
+I decided to go with Reakit, which is a very barebones UI lib focused more in implementing good a11y than styling itself, so I could take this part for granted and focus on the logic and visual parts.
+
 ## Tests
 
 Back-end tests can be run with `mix test` in the root folder.
