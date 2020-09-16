@@ -13,6 +13,7 @@ defmodule Bank.Accounts.User do
     field :balance, :decimal, default: Decimal.new("0.00")
     field :boleto_code, :string, virtual: true
     field :password, :string, virtual: true
+    field :confirm_password, :string, virtual: true
     field :hashed_password, :string
     field :confirmed_at, :naive_datetime
 
@@ -29,10 +30,11 @@ defmodule Bank.Accounts.User do
   """
   def registration_changeset(user, attrs) do
     user
-    |> cast(attrs, [:email, :password, :document, :name])
+    |> cast(attrs, [:email, :password, :document, :name, :confirm_password])
     |> validate_document()
     |> validate_email()
     |> validate_password()
+    |> validate_password_confirmation()
     |> validate_required([:name], message: "não pode estar em branco")
   end
 
@@ -151,7 +153,7 @@ defmodule Bank.Accounts.User do
   def boleto_payment_changeset(user, boleto_code) do
     user
     |> change(%{boleto_code: boleto_code})
-    |> validate_boleto(user)
+    |> validate_boleto(boleto_code)
     |> validate_number(:balance,
       greater_than_or_equal_to: 0,
       message: "valor do boleto excede o saldo do usuário"
@@ -264,7 +266,7 @@ defmodule Bank.Accounts.User do
       case Boleto.parse(get_field(changeset, :boleto_code)) do
         {:ok, boleto} ->
           if Boleto.still_payable?(boleto) do
-            put_change(changeset, :balance, Decimal.sub(user.balance, boleto.value))
+            put_change(changeset, :balance, user.balance)
           else
             add_error(changeset, :boleto_code, "boleto vencido")
           end
@@ -274,6 +276,14 @@ defmodule Bank.Accounts.User do
       end
     else
       changeset
+    end
+  end
+
+  defp validate_password_confirmation(changeset) do
+    if get_field(changeset, :password) == get_field(changeset, :confirm_password) do
+      changeset
+    else
+      add_error(changeset, :confirm_password, "senhas não conferem")
     end
   end
 end

@@ -30,6 +30,12 @@
     <%= error_tag f, :password %>
   </ul>
 
+  <%= label f, :confirm_password, "Confirme sua senha", [class: "form__label"] %>
+  <%= password_input f, :confirm_password, required: true %>
+  <ul>
+    <%= error_tag f, :confirm_password %>
+  </ul>
+
   <div>
     <%= submit "Cadastrar", [class: "form__button"] %>
   </div>

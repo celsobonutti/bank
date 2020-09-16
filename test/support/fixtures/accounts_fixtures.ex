@@ -17,6 +17,7 @@ defmodule Bank.AccountsFixtures do
         name: "Roberto Baptista",
         email: unique_user_email(),
         password: valid_user_password(),
+        confirm_password: valid_user_password(),
         document: valid_user_document()
       })
       |> Bank.Accounts.register_user()

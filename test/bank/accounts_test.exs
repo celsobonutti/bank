@@ -117,7 +117,8 @@ defmodule Bank.AccountsTest do
           name: "Roberto Baptista",
           email: email,
           document: valid_user_document(),
-          password: valid_user_password()
+          password: valid_user_password(),
+          confirm_password: valid_user_password()
         })
 
       assert user.email == email
@@ -141,6 +142,7 @@ defmodule Bank.AccountsTest do
           email: unique_user_email(),
           document: valid_user_document(),
           password: valid_user_password(),
+          confirm_password: valid_user_password(),
           balance: 500.0
         })
 

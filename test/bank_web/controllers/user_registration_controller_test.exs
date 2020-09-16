@@ -24,7 +24,13 @@ defmodule BankWeb.UserRegistrationControllerTest do
 
       conn =
         post(conn, Routes.user_registration_path(conn, :create), %{
-          "user" => %{"name" => "Robrto Baptista", "email" => email, "document" => valid_user_document(), "password" => valid_user_password()}
+          "user" => %{
+            "name" => "Robrto Baptista",
+            "email" => email,
+            "document" => valid_user_document(),
+            "password" => valid_user_password(),
+            "confirm_password" => valid_user_password()
+          }
         })
 
       assert get_session(conn, :user_token)
@@ -37,7 +43,11 @@ defmodule BankWeb.UserRegistrationControllerTest do
     test "render errors for invalid data", %{conn: conn} do
       conn =
         post(conn, Routes.user_registration_path(conn, :create), %{
-          "user" => %{"email" => "with spaces", "document" => "494812448",  "password" => "too short"}
+          "user" => %{
+            "email" => "with spaces",
+            "document" => "494812448",
+            "password" => "too short"
+          }
         })
 
       response = html_response(conn, 200)
