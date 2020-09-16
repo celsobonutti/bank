@@ -18,8 +18,6 @@ defmodule Bank.Boleto do
          due_date: due_date,
          value: value
        }}
-    else
-      err -> err
     end
   end
 
