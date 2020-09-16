@@ -6,6 +6,7 @@ defmodule Bank.Accounts do
   import Ecto.Query, warn: false
   alias Bank.Repo
   alias Bank.Accounts.{User, UserToken, UserNotifier}
+  alias Bank.Transactions.{Deposit, Payment, Withdrawal}
 
   ## Database getters
 
@@ -387,5 +388,34 @@ defmodule Bank.Accounts do
   def decrease_user_balance(user, value) do
     User.balance_decrease_changeset(user, value)
     |> Repo.update()
+  end
+
+  @doc """
+  Get the list of user transactions
+  """
+  def get_user_transactions(user_id) do
+    deposits_query =
+      from d in Deposit,
+        where: d.user_id == ^user_id,
+        select: %{type: "deposit", id: d.id, quantity: d.quantity, code: "", date: d.inserted_at}
+
+    payments_query =
+      from p in Payment,
+        where: p.user_id == ^user_id,
+        select: %{type: "payment", id: p.id, quantity: p.quantity, code: p.boleto_code, date: p.inserted_at}
+
+    withdrawals_query =
+      from w in Withdrawal,
+        where: w.user_id == ^user_id,
+        select: %{type: "withdrawal", id: w.id, quantity: w.quantity, code: "", date: w.inserted_at}
+
+    union = deposits_query |> union_all(^payments_query) |> union_all(^withdrawals_query)
+
+    ordered =
+      from(t in subquery(union),
+        order_by: [desc: t.date]
+      )
+
+    Repo.all(ordered)
   end
 end

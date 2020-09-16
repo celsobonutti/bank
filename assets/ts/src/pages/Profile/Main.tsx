@@ -1,21 +1,23 @@
 import React from 'react';
-import { useProfile } from '../../providers/UserProvider';
+import { TransactionCard } from '../../components/elements/TransactionCard';
+
+import { useTransactions } from '../../hooks/useTransactions';
 
 export const Main = () => {
-  const user = useProfile();
+  const { isLoading, data } = useTransactions();
+
+  if (isLoading) {
+    return <p>Loading...</p>;
+  }
+
+  console.log(data);
 
   return (
     <>
-      <h1 data-testid="profile-header">Olá, {user.name}, tudo bem?</h1>
-      <h2 data-testid="profile-balance">
-        Seu saldo é de{' '}
-        <b>
-          {Intl.NumberFormat('pt-BR', {
-            style: 'currency',
-            currency: 'BRL'
-          }).format(user.balance)}
-        </b>
-      </h2>
+      <h3>Histórico de transações</h3>
+      {data?.map((transaction) => (
+        <TransactionCard type={transaction.type} data={transaction} />
+      ))}
     </>
   );
 };

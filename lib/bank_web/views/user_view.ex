@@ -1,5 +1,6 @@
 defmodule BankWeb.UserView do
   use BankWeb, :view
+  alias BankWeb.UserView
 
   def render("show.json", %{user: user}) do
     balance =
@@ -14,6 +15,22 @@ defmodule BankWeb.UserView do
         email: user.email,
         balance: balance
       }
+    }
+  end
+
+  def render("transactions.json", %{transactions: transactions}) do
+    %{
+      data:
+        transactions
+        |> Enum.map(fn transaction ->
+          %{
+            type: transaction.type,
+            id: transaction.id,
+            quantity: transaction.quantity,
+            date: NaiveDateTime.to_string(transaction.date),
+            boleto_code: transaction.code
+          }
+        end)
     }
   end
 end

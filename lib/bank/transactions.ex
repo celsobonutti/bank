@@ -177,7 +177,7 @@ defmodule Bank.Transactions do
     {:ok, []}
   """
   def get_user_withdrawals(user_id) do
-    query = from d in Withdrawal, where: d.user_id == ^user_id, order_by: [desc: :inserted_at]
+    query = from w in Withdrawal, where: w.user_id == ^user_id, order_by: [desc: :inserted_at]
     Repo.all(query)
   end
 

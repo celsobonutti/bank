@@ -11,7 +11,8 @@ defmodule BankWeb.DepositView do
   end
 
   def render("deposit.json", %{deposit: deposit}) do
-    %{id: deposit.id,
+    %{
+      id: deposit.id,
       user_id: deposit.user_id,
       quantity: deposit.quantity,
       date: NaiveDateTime.to_string(deposit.inserted_at)
